@@ -33,4 +33,20 @@
       <section class="panel"><h2>💡 Hints</h2><p>Every puzzle has a hint button. A hint costs <strong>50 points</strong> (only the first time you open it for that puzzle).</p></section>
             <!-- 8. Auto Save Information -->
       <section class="panel"><h2>💾 Auto save</h2><p>Your progress and remaining time are saved in this browser. Refreshing the page will not reset the clock.</p></section>
-      
+            <!-- 9. Scoring System -->
+      <section class="panel"><h2>⭐ Scoring</h2>
+        <table class="score-table">
+          <tr><td>Start of game</td><td>1000</td></tr>
+          <tr><td>Solve a puzzle</td><td class="plus">+100</td></tr>
+          <tr><td>Complete a room</td><td class="plus">+150</td></tr>
+          <tr><td>Escape (finish game)</td><td class="plus">+300</td></tr>
+          <tr><td>Wrong answer</td><td class="minus">−25</td></tr>
+          <tr><td>Use a hint</td><td class="minus">−50</td></tr>
+        </table>
+        <p class="muted small">The score never goes below 0.</p>
+      </section>
+    </div>
+
+    <!-- Home Navigation -->
+    <div class="center"><a id="go-btn" class="btn btn-primary btn-big" href="index.html">Back to Home</a></div>
+  </main>
