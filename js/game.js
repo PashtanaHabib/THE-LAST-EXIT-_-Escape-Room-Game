@@ -243,3 +243,369 @@ function handleObject(o) {
     completeRoom(room.id);
   }
 }
+
+// puzzles
+function openPuzzle(id) {
+  var p = getPuzzle(id);
+  puzzleState = {
+    id: id,
+    seq: [],
+    toggles:
+      p.type === "toggles"
+        ? p.switches.map(function () {
+            return 0;
+          })
+        : [],
+    choice: null,
+  };
+  var body = "";
+
+  if (p.type === "text") {
+    body =
+      '<input id="pz-input" class="pz-input" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="' +
+      (p.digits || 24) +
+      '"' +
+      (p.digits ? ' inputmode="numeric"' : "") +
+      ' placeholder="' +
+      escapeHtml(p.placeholder || "") +
+      '">';
+  } else if (p.type === "choice") {
+    body =
+      '<div class="pz-choices">' +
+      p.options
+        .map(function (op) {
+          return (
+            '<button type="button" class="pz-choice" data-choice="' +
+            op.id +
+            '">' +
+            escapeHtml(op.label) +
+            "</button>"
+          );
+        })
+        .join("") +
+      "</div>";
+  } else if (p.type === "sequence") {
+    body =
+      '<div class="pz-slots" id="pz-slots">' +
+      p.answer
+        .map(function () {
+          return '<span class="slot"></span>';
+        })
+        .join("") +
+      "</div>" +
+      '<div class="pz-options">' +
+      p.options
+        .map(function (op) {
+          var style = op.color ? ' style="background:' + op.color + '"' : "";
+          return (
+            '<button type="button" class="pz-opt' +
+            (op.color ? " color" : "") +
+            '" data-opt="' +
+            op.id +
+            '"' +
+            style +
+            ' aria-label="' +
+            escapeHtml(op.name || op.id) +
+            '">' +
+            escapeHtml(op.label || "") +
+            "</button>"
+          );
+        })
+        .join("") +
+      "</div>" +
+      '<div class="pz-names">' +
+      p.options
+        .map(function (op) {
+          return "<span>" + escapeHtml(op.name || "") + "</span>";
+        })
+        .join("") +
+      "</div>";
+  } else if (p.type === "toggles") {
+    body =
+      '<div class="pz-switches">' +
+      p.switches
+        .map(function (s, i) {
+          return (
+            '<button type="button" class="pz-switch" data-sw="' +
+            i +
+            '" aria-pressed="false"><span class="sw-name">' +
+            s +
+            '</span><span class="sw-knob"></span><span class="sw-state">OFF</span></button>'
+          );
+        })
+        .join("") +
+      "</div>";
+  }
+
+  var showHint = gameState.hintsUsed.indexOf(id) !== -1;
+  var needsClear = p.type === "sequence";
+  var html =
+    '<div class="modal-head"><span class="modal-icon">' +
+    p.icon +
+    "</span><h2>" +
+    escapeHtml(p.title) +
+    "</h2></div>" +
+    '<p class="modal-text pz-prompt">' +
+    escapeHtml(p.prompt).replace(/\n/g, "<br>") +
+    "</p>" +
+    body +
+    '<div class="pz-msg" id="pz-msg" role="status"></div>' +
+    '<div class="pz-hint" id="pz-hint"' +
+    (showHint ? "" : " hidden") +
+    ">💡 " +
+    escapeHtml(p.hint) +
+    "</div>" +
+    '<div class="modal-actions">' +
+    '<button type="button" class="btn btn-ghost" id="pz-hint-btn">Hint (−50)</button>' +
+    (needsClear
+      ? '<button type="button" class="btn btn-ghost" id="pz-clear">Clear</button>'
+      : "") +
+    '<button type="button" class="btn btn-primary" id="pz-submit">' +
+    (p.type === "text"
+      ? "Enter"
+      : p.type === "toggles"
+        ? "Activate"
+        : "Confirm") +
+    "</button>" +
+    "</div>";
+  openModal(html);
+  bindPuzzle(p);
+}
+
+function setPuzzleMessage(text, kind) {
+  var el = document.getElementById("pz-msg");
+  if (!el) return;
+  el.textContent = text;
+  el.className = "pz-msg " + (kind || "");
+}
+
+function bindPuzzle(p) {
+  var box = document.getElementById("modal-box");
+  var submit = document.getElementById("pz-submit");
+
+  document.getElementById("pz-hint-btn").addEventListener("click", function () {
+    useHint(p);
+  });
+
+  function readValue() {
+    if (p.type === "text") return document.getElementById("pz-input").value;
+    if (p.type === "choice") return puzzleState.choice;
+    if (p.type === "sequence") return puzzleState.seq.slice();
+    if (p.type === "toggles") return puzzleState.toggles.join("");
+    return null;
+  }
+
+  function trySubmit() {
+    var v = readValue();
+    if (p.type === "text" && !String(v).trim()) {
+      setPuzzleMessage("Type an answer first.", "bad");
+      return;
+    }
+    if (p.id === "p12" && !getFinalGateCode()) {
+      setPuzzleMessage(
+        "You need Gate Fragments 1, 2 and 3 in your inventory before entering the final code.",
+        "bad",
+      );
+      return;
+    }
+    if (p.type === "choice" && !v) {
+      setPuzzleMessage("Select an option first.", "bad");
+      return;
+    }
+    if (p.type === "sequence" && v.length < p.answer.length) {
+      setPuzzleMessage(
+        "Choose all " + p.answer.length + " items first.",
+        "bad",
+      );
+      return;
+    }
+    if (checkAnswer(p.id, v)) onPuzzleSolved(p);
+    else onWrongAnswer(p, box);
+  }
+  submit.addEventListener("click", trySubmit);
+
+  if (p.type === "text") {
+    var input = document.getElementById("pz-input");
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        trySubmit();
+      }
+    });
+    if (p.digits)
+      input.addEventListener("input", function () {
+        input.value = input.value.replace(/[^0-9]/g, "");
+      });
+  }
+
+  if (p.type === "choice") {
+    var btns = box.querySelectorAll(".pz-choice");
+    Array.prototype.forEach.call(btns, function (b) {
+      b.addEventListener("click", function () {
+        playSound("click");
+        puzzleState.choice = b.getAttribute("data-choice");
+        Array.prototype.forEach.call(btns, function (x) {
+          x.classList.toggle("selected", x === b);
+        });
+        setPuzzleMessage("", "");
+      });
+    });
+  }
+
+  if (p.type === "sequence") {
+    var opts = box.querySelectorAll(".pz-opt");
+    var renderSlots = function () {
+      var slots = box.querySelectorAll(".slot");
+      Array.prototype.forEach.call(slots, function (s, i) {
+        var id = puzzleState.seq[i],
+          def = null;
+        p.options.forEach(function (o) {
+          if (o.id === id) def = o;
+        });
+        s.textContent = def && !def.color ? def.label : "";
+        s.style.background = def && def.color ? def.color : "";
+        s.classList.toggle("filled", !!def);
+      });
+      Array.prototype.forEach.call(opts, function (b) {
+        b.classList.toggle(
+          "used",
+          p.unique &&
+            puzzleState.seq.indexOf(b.getAttribute("data-opt")) !== -1,
+        );
+      });
+    };
+    Array.prototype.forEach.call(opts, function (b) {
+      b.addEventListener("click", function () {
+        var id = b.getAttribute("data-opt");
+        if (puzzleState.seq.length >= p.answer.length) return;
+        if (p.unique && puzzleState.seq.indexOf(id) !== -1) return;
+        playSound("click");
+        puzzleState.seq.push(id);
+        setPuzzleMessage("", "");
+        renderSlots();
+      });
+    });
+    document.getElementById("pz-clear").addEventListener("click", function () {
+      puzzleState.seq = [];
+      setPuzzleMessage("", "");
+      renderSlots();
+    });
+    puzzleState.renderSlots = renderSlots;
+  }
+
+  if (p.type === "toggles") {
+    var sws = box.querySelectorAll(".pz-switch");
+    Array.prototype.forEach.call(sws, function (b) {
+      b.addEventListener("click", function () {
+        playSound("click");
+        var i = Number(b.getAttribute("data-sw"));
+        puzzleState.toggles[i] = puzzleState.toggles[i] ? 0 : 1;
+        var on = puzzleState.toggles[i] === 1;
+        b.classList.toggle("on", on);
+        b.setAttribute("aria-pressed", on ? "true" : "false");
+        b.querySelector(".sw-state").textContent = on ? "ON" : "OFF";
+        setPuzzleMessage("", "");
+      });
+    });
+  }
+}
+
+function useHint(p) {
+  var el = document.getElementById("pz-hint");
+  if (!el) return;
+  if (gameState.hintsUsed.indexOf(p.id) === -1) {
+    gameState.hintsUsed.push(p.id);
+    saveGame();
+    addScore(SCORE_RULES.hint);
+    setPuzzleMessage("Hint used: −50 points.", "bad");
+  }
+  el.hidden = false;
+}
+
+function onWrongAnswer(p, box) {
+  gameState.wrongAnswers++;
+  saveGame();
+  addScore(SCORE_RULES.wrong);
+  playSound("wrong");
+  box.classList.remove("shake");
+  void box.offsetWidth; // restart the animation
+  box.classList.add("shake");
+  if (typeof isScreenShakeEnabled === "function" && isScreenShakeEnabled()) {
+    document.body.classList.remove("screen-shake");
+    void document.body.offsetWidth;
+    document.body.classList.add("screen-shake");
+    window.setTimeout(function () {
+      document.body.classList.remove("screen-shake");
+    }, 420);
+  }
+  setPuzzleMessage("Incorrect. −25 points.", "bad");
+  if (p.type === "sequence") {
+    puzzleState.seq = [];
+    if (puzzleState.renderSlots) puzzleState.renderSlots();
+  }
+}
+
+function onPuzzleSolved(p) {
+  gameState.solvedPuzzles.push(p.id);
+  saveGame();
+  addScore(SCORE_RULES.puzzle);
+  playSound("correct");
+
+  var gained = [];
+  p.reward.forEach(function (id) {
+    if (addItem(id)) gained.push(getItemDef(id));
+  });
+
+  var gainedHtml = gained.length
+    ? '<div class="reward-list">' +
+      gained
+        .map(function (d) {
+          return (
+            '<span class="reward">' +
+            d.icon +
+            " " +
+            escapeHtml(d.name) +
+            "</span>"
+          );
+        })
+        .join("") +
+      "</div>"
+    : "";
+
+  var stage = document.getElementById("stage");
+  if (stage) {
+    stage.classList.remove("solved-flash");
+    void stage.offsetWidth;
+    stage.classList.add("solved-flash");
+    window.setTimeout(function () {
+      stage.classList.remove("solved-flash");
+    }, 650);
+  }
+  var box = document.getElementById("modal-box");
+  box.classList.add("success");
+  document.getElementById("modal-content").innerHTML =
+    '<div class="modal-head"><span class="modal-icon">✅</span><h2>Solved!</h2></div>' +
+    '<p class="modal-text">' +
+    escapeHtml(p.success) +
+    "</p>" +
+    gainedHtml +
+    '<p class="modal-note">+100 points</p>' +
+    '<div class="modal-actions"><button type="button" class="btn btn-primary" data-close>' +
+    (p.final ? "Continue" : "Continue") +
+    "</button></div>";
+  var btn = box.querySelector("[data-close]");
+  if (btn) btn.focus();
+  updateRoomUI();
+
+  if (p.final) {
+    completeRoom(currentRoom.id, true);
+    modalOnClose = function () {
+      window.location.href = "result.html";
+    };
+    finishGame(true, true);
+  } else {
+    modalOnClose = function () {
+      box.classList.remove("success");
+    };
+  }
+}
