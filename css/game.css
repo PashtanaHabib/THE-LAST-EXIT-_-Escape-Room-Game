@@ -224,3 +224,193 @@
 .inv-icon {
   font-size: 1.25rem;
 }
+
+/* puzzle modal parts */
+.pz-prompt {
+  white-space: normal;
+}
+.pz-input {
+  width: 100%;
+  margin-top: 6px;
+  padding: 12px 14px;
+  font:
+    700 1.3rem "Courier New",
+    monospace;
+  letter-spacing: 0.25em;
+  text-align: center;
+  text-transform: uppercase;
+  background: #0b1016;
+  color: #8af0d0;
+  border: 1px solid #2f4c47;
+  border-radius: 8px;
+}
+.pz-input:focus {
+  outline: none;
+  border-color: #8af0d0;
+  box-shadow: 0 0 0 3px rgba(138, 240, 208, 0.15);
+}
+.pz-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.pz-choice {
+  padding: 11px 14px;
+  text-align: left;
+  font: inherit;
+  font-size: 0.98rem;
+  color: var(--text);
+  background: #1b2430;
+  border: 1px solid #34414f;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.pz-choice:hover {
+  border-color: var(--gold);
+}
+.pz-choice.selected {
+  border-color: var(--gold);
+  background: rgba(214, 180, 119, 0.16);
+  color: var(--gold);
+}
+.pz-slots {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin: 6px 0 14px;
+}
+.slot {
+  width: 54px;
+  height: 54px;
+  border-radius: 10px;
+  border: 2px dashed #3a4859;
+  background: #0b1016;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  color: var(--gold);
+}
+.slot.filled {
+  border-style: solid;
+  border-color: var(--gold);
+}
+.pz-options {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.pz-opt {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  border: 2px solid #3a4859;
+  background: #1b2430;
+  color: var(--text);
+  font-size: 2rem;
+  cursor: pointer;
+  transition:
+    transform 0.1s,
+    opacity 0.15s;
+}
+.pz-opt:hover {
+  transform: scale(1.07);
+  border-color: var(--gold);
+}
+.pz-opt.used {
+  opacity: 0.28;
+  cursor: default;
+  transform: none;
+}
+.pz-names {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 4px;
+}
+.pz-names span {
+  width: 64px;
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+.pz-switches {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin: 8px 0;
+}
+.pz-switch {
+  width: 74px;
+  padding: 10px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: #1b2430;
+  border: 2px solid #34414f;
+  border-radius: 12px;
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+}
+.sw-name {
+  font:
+    700 1.1rem "Courier New",
+    monospace;
+  color: var(--gold);
+}
+.sw-knob {
+  width: 22px;
+  height: 44px;
+  border-radius: 11px;
+  background: #0b1016;
+  border: 2px solid #4a5868;
+  position: relative;
+}
+.sw-knob::after {
+  content: "";
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  height: 18px;
+  border-radius: 9px;
+  background: #6d7782;
+  transition: all 0.18s;
+}
+.pz-switch.on {
+  border-color: var(--good);
+}
+.pz-switch.on .sw-knob::after {
+  bottom: 20px;
+  background: var(--good);
+  box-shadow: 0 0 10px var(--good);
+}
+.sw-state {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+.pz-switch.on .sw-state {
+  color: var(--good);
+}
+.pz-msg {
+  min-height: 1.5em;
+  margin-top: 12px;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+.pz-msg.bad {
+  color: var(--bad);
+}
+.pz-hint {
+  margin-top: 8px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(214, 180, 119, 0.1);
+  border: 1px dashed rgba(214, 180, 119, 0.5);
+  color: var(--gold);
+  font-size: 0.92rem;
+}
