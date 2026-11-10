@@ -269,3 +269,41 @@ function sceneLibrary() {
   <rect x="${P(30, W)}" y="${P(64, H)}" width="${P(2, W)}" height="${P(26, H)}" fill="#1a0f08"/><rect x="${P(93, W)}" y="${P(64, H)}" width="${P(2, W)}" height="${P(26, H)}" fill="#1a0f08"/>
   <ellipse cx="${P(70, W)}" cy="${P(48, H)}" rx="260" ry="240" fill="url(#warm)"/>`;
 }
+// 8. Build Laboratory and Final Room Background Scenes
+
+function sceneLab() {
+  const fy = P(72, H);
+  let tiles = '';
+  for (let x = 0; x < W; x += 80) tiles += `<rect x="${x}" y="0" width="2" height="${fy}" fill="rgba(180,220,255,.05)"/>`;
+  for (let y = 0; y < fy; y += 80) tiles += `<rect x="0" y="${y}" width="${W}" height="2" fill="rgba(180,220,255,.05)"/>`;
+  return `
+  <rect width="${W}" height="${H}" fill="#0a1117"/>
+  <rect width="${W}" height="${fy}" fill="#142330"/>${tiles}
+  <rect y="${fy}" width="${W}" height="${H - fy}" fill="#0a1015"/>
+  ${Array.from({ length: 16 }).map((_, i) => `<line x1="${i * 110}" y1="${fy}" x2="${(i - 7.5) * 260 + 800}" y2="${H}" stroke="rgba(120,180,220,.07)" stroke-width="2"/>`).join('')}
+  <rect x="${P(24, W)}" y="${P(66, H)}" width="${P(34, W)}" height="${P(3, H)}" fill="#56626f"/>
+  <rect x="${P(25, W)}" y="${P(69, H)}" width="${P(32, W)}" height="${P(20, H)}" fill="url(#steel)"/>
+  <rect x="${P(28, W)}" y="${P(72, H)}" width="${P(12, W)}" height="${P(14, H)}" fill="rgba(0,0,0,.3)" stroke="#111" stroke-width="2"/>
+  <rect x="${P(42, W)}" y="${P(72, H)}" width="${P(12, W)}" height="${P(14, H)}" fill="rgba(0,0,0,.3)" stroke="#111" stroke-width="2"/>
+  <rect x="${P(46, W)}" y="0" width="${P(14, W)}" height="14" fill="#cfeaff" opacity=".6"/><rect x="${P(10, W)}" y="0" width="${P(14, W)}" height="14" fill="#cfeaff" opacity=".5"/>
+  <polygon points="${P(46, W)},0 ${P(60, W)},0 ${P(66, W)},${fy} ${P(40, W)},${fy}" fill="url(#beam)"/>
+  <ellipse cx="${P(72, W)}" cy="${P(52, H)}" rx="330" ry="260" fill="url(#cyan)"/>`;
+}
+function sceneFinal() {
+  const fy = P(72, H);
+  return `
+  <rect width="${W}" height="${H}" fill="#0a0c10"/>
+  <rect width="${W}" height="${fy}" fill="#161a20"/>
+  ${Array.from({ length: 16 }).map((_, i) => `<rect x="${i * 110}" y="0" width="3" height="${fy}" fill="rgba(255,255,255,.04)"/>`).join('')}
+  <rect y="${fy}" width="${W}" height="${H - fy}" fill="#090b0e"/>
+  ${Array.from({ length: 14 }).map((_, i) => `<line x1="${P(50, W)}" y1="${fy}" x2="${i * 130 - 100}" y2="${H}" stroke="rgba(255,255,255,.05)" stroke-width="2"/>`).join('')}
+  <ellipse cx="${P(50, W)}" cy="${P(82, H)}" rx="260" ry="34" fill="rgba(255,74,42,.18)"/>
+  <rect x="${P(8, W)}" y="${P(56, H)}" width="${P(20, W)}" height="${P(3, H)}" fill="#4a5662"/>
+  <rect x="${P(9, W)}" y="${P(59, H)}" width="${P(18, W)}" height="${P(13, H)}" fill="url(#steel)"/>
+  <rect x="${P(30, W)}" y="${P(2, H)}" width="${P(40, W)}" height="12" fill="#ff6a4a" opacity=".85"/>
+  <ellipse cx="${P(50, W)}" cy="${P(30, H)}" rx="520" ry="360" fill="url(#redglow)"/>
+  <circle cx="${P(50, W)}" cy="${P(6, H)}" r="14" fill="#ff4a2a"/>`;
+}
+
+const SCENES = { office: sceneOffice, library: sceneLibrary, laboratory: sceneLab, final: sceneFinal };
+const DOOR_STYLE = { office: { base: '#3a281c' }, library: { base: '#2b1d14' }, laboratory: { base: '#2c3844', window: true } };
