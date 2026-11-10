@@ -609,3 +609,70 @@ function onPuzzleSolved(p) {
     };
   }
 }
+
+//  room / game completion
+
+function completeRoom(roomId, silent) {
+  if (isRoomCompleted(roomId)) return;
+  gameState.completedRooms.push(roomId);
+  if (
+    roomId < ROOMS.length &&
+    gameState.unlockedRooms.indexOf(roomId + 1) === -1
+  ) {
+    gameState.unlockedRooms.push(roomId + 1);
+  }
+  saveGame();
+  addScore(SCORE_RULES.room);
+  updateRoomUI();
+  if (silent) return;
+  playSound("unlock");
+  var next = getRoom(roomId + 1);
+  openModal(
+    '<div class="modal-head"><span class="modal-icon">🔓</span><h2>Room Complete!</h2></div>' +
+      '<p class="modal-text">The door unlocks with a heavy click. ' +
+      (next
+        ? "Next: <strong>" + escapeHtml(next.title) + "</strong> is now open."
+        : "") +
+      "</p>" +
+      '<p class="modal-note">+150 points</p>' +
+      '<div class="modal-actions"><a class="btn btn-primary" href="levels.html">Continue to Room Selection</a></div>',
+  );
+}
+
+function finishGame(won, keepModal) {
+  if (!gameState || gameState.status !== "playing") return;
+  stopTimer();
+  if (won) {
+    playSound("victory");
+    gameState.status = "won";
+    saveGame();
+    addScore(SCORE_RULES.game);
+    saveRecord();
+  } else {
+    gameState.status = "lost";
+    saveGame();
+  }
+  gameState.finishedAt = Date.now();
+  saveGame();
+  if (keepModal) return; // victory: the solved modal sends the player to the result page
+  if (won) {
+    window.location.href = "result.html";
+    return;
+  }
+
+  // Time is up: show a short Game Over message, then go to the result page
+  var overlay = document.getElementById("modal-overlay");
+  if (overlay) {
+    playSound("wrong");
+    openModal(
+      '<div class="modal-head"><span class="modal-icon">⏳</span><h2>Time\'s Up</h2></div>' +
+        '<p class="modal-text">The countdown reached zero. The doors seal forever...</p>' +
+        '<div class="modal-actions"><a class="btn btn-primary" href="result.html">See Result</a></div>',
+    );
+    setTimeout(function () {
+      window.location.href = "result.html";
+    }, 4000);
+  } else {
+    window.location.href = "result.html";
+  }
+}
