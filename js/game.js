@@ -676,3 +676,58 @@ function finishGame(won, keepModal) {
     window.location.href = "result.html";
   }
 }
+
+
+
+// page start
+function initGamePage() {
+  if (!requireGame('playing')) return;
+  var params = new URLSearchParams(window.location.search);
+  var rid = Number(params.get('room')) || gameState.currentRoom || 1;
+  var room = getRoom(rid);
+  if (!room || !isRoomUnlocked(rid)) { window.location.replace('levels.html'); return; }
+  currentRoom = room;
+  gameState.currentRoom = rid;
+  saveGame();
+
+  document.getElementById('hud-player').textContent = gameState.playerName;
+  updateScoreDisplay();
+  updateTimerDisplay();
+  renderRoom();
+  renderInventory();
+
+  // modal close handling
+  document.getElementById('modal-overlay').addEventListener('click', function (e) {
+    if (e.target.id === 'modal-overlay' || e.target.id === 'modal-close' || (e.target.hasAttribute && e.target.hasAttribute('data-close'))) closeModal();
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
+
+  // Try immediately, then retry on the first real user interaction.
+  // The Begin button is also a direct user gesture and starts the soundtrack.
+  if (typeof startAmbientAudio === 'function') startAmbientAudio();
+
+  var begin = function () {
+    if (typeof startAmbientAudio === 'function') startAmbientAudio();
+    startTimer(null, function () { finishGame(false); });
+  };
+
+  var unlockAdventureSound = function () {
+    if (typeof startAmbientAudio === 'function') startAmbientAudio();
+  };
+  document.addEventListener('pointerdown', unlockAdventureSound, { once: true });
+  document.addEventListener('keydown', unlockAdventureSound, { once: true });
+
+  if (gameState.introSeen.indexOf(rid) === -1 && !isRoomCompleted(rid)) {
+    gameState.introSeen.push(rid);
+    saveGame();
+    openModal(
+      '<div class="modal-head intro"><span class="eyebrow">ROOM 0' + room.id + '</span><h2>' + escapeHtml(room.title) + '</h2></div>' +
+      '<p class="modal-text">' + escapeHtml(room.intro) + '</p>' +
+      '<p class="modal-note">Goal: ' + escapeHtml(room.objective) + '</p>' +
+      '<div class="modal-actions"><button type="button" class="btn btn-primary" data-close>Begin</button></div>',
+      begin
+    );
+  } else {
+    begin();
+  }
+}
