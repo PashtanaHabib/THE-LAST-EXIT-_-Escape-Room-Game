@@ -101,4 +101,50 @@ A.lockbox = (w, h) => `<rect y="${h * .15}" width="${w}" height="${h * .85}" rx=
   <rect y="${h * .15}" width="${w}" height="${h * .3}" rx="4" fill="#56626f" stroke="#0e1319" stroke-width="3"/>
   <rect x="${w * .42}" y="${h * .38}" width="${w * .16}" height="${h * .22}" rx="3" fill="url(#brass)"/>
   <circle cx="${w / 2}" cy="${h * .7}" r="${w * .06}" fill="#0b0f14"/>`;
-  
+ // 4. Create Library Room Object Illustrations
+
+/* ---- library ---- */
+A.bookshelf = (w, h) => {
+  const r = rng(11);
+  const cols = ['#7a2e2e', '#2e4a7a', '#2f6b4a', '#7a5a2e', '#5a2e7a', '#8a7a4a', '#3a3a4a', '#9a4a2a'];
+  let out = `<rect width="${w}" height="${h}" fill="#241710" stroke="#0e0905" stroke-width="4"/>`;
+  const rows = 3, rh = h / rows;
+  for (let row = 0; row < rows; row++) {
+    let x = 10;
+    while (x < w - 16) {
+      const bw = 12 + r() * 14, bh = rh * (.62 + r() * .3), c = cols[Math.floor(r() * cols.length)];
+      out += `<rect x="${x}" y="${row * rh + rh - 8 - bh}" width="${bw}" height="${bh}" fill="${c}" stroke="rgba(0,0,0,.6)" stroke-width="1.5"/>
+      <rect x="${x + 2}" y="${row * rh + rh - 8 - bh + 8}" width="${bw - 4}" height="3" fill="rgba(214,180,119,.55)"/>`;
+      x += bw + 1;
+    }
+    out += `<rect x="0" y="${row * rh + rh - 8}" width="${w}" height="8" fill="#3a271a"/>`;
+  }
+  return out;
+};
+A.plaque = (w, h) => `<rect width="${w}" height="${h}" rx="5" fill="url(#brass)" stroke="#4a3a15" stroke-width="3"/>
+  <text x="${w / 2}" y="${h * .42}" text-anchor="middle" font-family="serif" font-weight="bold" font-size="${w * .12}" fill="#3a2c0e">SEEK THE</text>
+  <text x="${w / 2}" y="${h * .68}" text-anchor="middle" font-family="serif" font-weight="bold" font-size="${w * .12}" fill="#3a2c0e">OLDEST TALE</text>`;
+A.globe = (w, h) => `<ellipse cx="${w / 2}" cy="${h * .96}" rx="${w * .34}" ry="${h * .04}" fill="#2a1b11"/>
+  <rect x="${w * .46}" y="${h * .6}" width="${w * .08}" height="${h * .36}" fill="#5a4026"/>
+  <circle cx="${w / 2}" cy="${h * .36}" r="${w * .42}" fill="#1f4a66" stroke="#b89a5a" stroke-width="4"/>
+  <path d="M${w * .2} ${h * .3}q${w * .1}-${h * .1} ${w * .2} 0t${w * .15} ${h * .06}q-${w * .05} ${h * .1}-${w * .18} ${h * .08}t-${w * .17}-${h * .14}zM${w * .55} ${h * .4}q${w * .1}-${h * .05} ${w * .15} ${h * .02}t-${w * .03} ${h * .1}t-${w * .12}-${h * .12}z" fill="#6f8f4a"/>
+  <ellipse cx="${w / 2}" cy="${h * .36}" rx="${w * .16}" ry="${w * .42}" fill="none" stroke="rgba(214,180,119,.5)" stroke-width="2"/>`;
+A.tablet = (w, h) => `<rect width="${w}" height="${h}" rx="6" fill="#59595f" stroke="#2c2c30" stroke-width="3"/>
+  ${['◉', '★', '☀', '☾'].map((s, i) => `<rect x="${w * .07 + i * w * .23}" y="${h * .18}" width="${w * .19}" height="${h * .64}" rx="4" fill="#3b3b40" stroke="#222" stroke-width="2"/>
+  <text x="${w * .165 + i * w * .23}" y="${h * .66}" text-anchor="middle" font-family="sans-serif" font-size="${h * .5}" fill="#8e8e96">${s}</text>`).join('')}`;
+A.painting = (w, h) => `<rect width="${w}" height="${h}" fill="url(#brass)" stroke="#3a2a0e" stroke-width="3"/>
+  <rect x="${w * .07}" y="${h * .05}" width="${w * .86}" height="${h * .9}" fill="url(#sky)"/>
+  ${[[.2, .15], [.7, .2], [.45, .3], [.8, .45], [.25, .5], [.6, .12]].map(p => `<circle cx="${w * p[0]}" cy="${h * p[1]}" r="2.4" fill="#fff"/>`).join('')}
+  <path d="M${w * .28} ${h * .26}a${w * .1} ${w * .1} 0 1 0 ${w * .1} ${h * .13}a${w * .08} ${w * .08} 0 1 1-${w * .1}-${h * .13}z" fill="#e8dfa8"/>
+  <ellipse cx="${w * .5}" cy="${h * .7}" rx="${w * .3}" ry="${h * .1}" fill="#e8e8f0"/><circle cx="${w * .5}" cy="${h * .7}" r="${h * .075}" fill="#3a6aa8"/><circle cx="${w * .5}" cy="${h * .7}" r="${h * .035}" fill="#000"/>`;
+A.lamp = (w, h) => `<polygon points="${w * .12},${h * .42} ${w * .88},${h * .42} ${w * .68},${h * .08} ${w * .32},${h * .08}" fill="#d9a85a" stroke="#6a4a1a" stroke-width="3"/>
+  <rect x="${w * .46}" y="${h * .42}" width="${w * .08}" height="${h * .46}" fill="#6a4a1a"/>
+  <ellipse cx="${w / 2}" cy="${h * .92}" rx="${w * .3}" ry="${h * .06}" fill="#4a3216"/>`;
+A.safe = (w, h) => `<rect width="${w}" height="${h}" rx="5" fill="url(#steel)" stroke="#0d1218" stroke-width="4"/>
+  <rect x="${w * .12}" y="${h * .08}" width="${w * .76}" height="${h * .16}" fill="#120808" stroke="#444" stroke-width="2"/>
+  <text x="${w / 2}" y="${h * .2}" text-anchor="middle" font-family="monospace" font-size="${h * .1}" fill="#ff4a3a">● ● ● ● ● ●</text>
+  <circle cx="${w * .5}" cy="${h * .58}" r="${w * .26}" fill="#2c3641" stroke="#98a" stroke-width="3"/>
+  <circle cx="${w * .5}" cy="${h * .58}" r="${w * .06}" fill="url(#brass)"/>
+  <path d="M${w * .5} ${h * .36}v${h * .1}" stroke="#d6b477" stroke-width="4"/>
+  <rect x="${w * .8}" y="${h * .5}" width="${w * .08}" height="${h * .2}" rx="3" fill="url(#brass)"/>`;
+   
