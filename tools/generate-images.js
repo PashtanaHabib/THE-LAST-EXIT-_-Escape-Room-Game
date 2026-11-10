@@ -147,4 +147,47 @@ A.safe = (w, h) => `<rect width="${w}" height="${h}" rx="5" fill="url(#steel)" s
   <circle cx="${w * .5}" cy="${h * .58}" r="${w * .06}" fill="url(#brass)"/>
   <path d="M${w * .5} ${h * .36}v${h * .1}" stroke="#d6b477" stroke-width="4"/>
   <rect x="${w * .8}" y="${h * .5}" width="${w * .08}" height="${h * .2}" rx="3" fill="url(#brass)"/>`;
-   
+   // 5. Create Laboratory Room Object Illustrations
+
+/* ---- laboratory ---- */
+A.chalkboard = (w, h) => `<rect width="${w}" height="${h}" rx="4" fill="#6a4b2f" stroke="#2a1b0e" stroke-width="3"/>
+  <rect x="${w * .03}" y="${h * .05}" width="${w * .94}" height="${h * .9}" fill="#1f3a32"/>
+  <text x="${w * .5}" y="${h * .38}" text-anchor="middle" font-family="cursive, sans-serif" font-size="${h * .17}" fill="#e8f0e8">2   6   12   20   30   ?</text>
+  <path d="M${w * .1} ${h * .6}l${w * .12}${h * .08}l${w * .1}-${h * .08}M${w * .55} ${h * .62}h${w * .3}" stroke="#bcd0c4" stroke-width="2.5" fill="none"/>
+  <text x="${w * .12}" y="${h * .85}" font-family="cursive, sans-serif" font-size="${h * .09}" fill="#9fb8aa">+4  +6  +8  +10 ...</text>`;
+A.labmonitor = (w, h) => `<rect width="${w}" height="${h}" rx="5" fill="#10151b" stroke="#3a4651" stroke-width="3"/>
+  <rect x="${w * .07}" y="${h * .1}" width="${w * .86}" height="${h * .78}" fill="url(#screen)"/>
+  <polyline points="${w * .1},${h * .7} ${w * .25},${h * .45} ${w * .4},${h * .6} ${w * .55},${h * .3} ${w * .7},${h * .5} ${w * .9},${h * .25}" fill="none" stroke="#8af0d0" stroke-width="3"/>
+  <text x="${w * .1}" y="${h * .28}" font-family="monospace" font-size="${h * .1}" fill="#8af0d0">REACTOR LOG</text>`;
+A.poster = (w, h) => `<rect width="${w}" height="${h}" fill="#e2dcc4" stroke="#555" stroke-width="2"/>
+  <polygon points="${w / 2},${h * .08} ${w * .85},${h * .5} ${w * .15},${h * .5}" fill="#e6b41f" stroke="#111" stroke-width="4"/>
+  <text x="${w / 2}" y="${h * .44}" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="${h * .3}" fill="#111">!</text>
+  <path d="M${w * .15} ${h * .62}h${w * .7}M${w * .15} ${h * .74}h${w * .7}M${w * .15} ${h * .86}h${w * .45}" stroke="#444" stroke-width="3"/>`;
+A.flasks = (w, h) => {
+  const cols = ['#d93a3a', '#e6c229', '#2e7bd6', '#2fae5b'];
+  return `<rect x="0" y="${h * .45}" width="${w}" height="8" fill="#3b4652"/><rect x="0" y="${h * .9}" width="${w}" height="8" fill="#3b4652"/>
+  ${[0, 1, 2, 3].map(i => {
+    const cx = w * (.14 + i * .24), c = cols[i];
+    return `<polygon points="${cx - w * .05},${h * .1} ${cx + w * .05},${h * .1} ${cx + w * .12},${h * .44} ${cx - w * .12},${h * .44}" fill="rgba(200,230,255,.2)" stroke="#aac" stroke-width="2"/>
+    <polygon points="${cx - w * .08},${h * .27} ${cx + w * .08},${h * .27} ${cx + w * .12},${h * .44} ${cx - w * .12},${h * .44}" fill="${c}" opacity=".9"/>
+    <rect x="${cx - w * .08}" y="${h * .56}" width="${w * .16}" height="${h * .34}" rx="4" fill="rgba(200,230,255,.18)" stroke="#aac" stroke-width="2"/>
+    <rect x="${cx - w * .08}" y="${h * .68}" width="${w * .16}" height="${h * .22}" fill="${cols[(i + 2) % 4]}" opacity=".85"/>`;
+  }).join('')}`;
+};
+A.console = (w, h) => {
+  const order = ['#2e7bd6', '#d93a3a', '#e6c229', '#2fae5b'];
+  return `<polygon points="0,${h} ${w * .06},${h * .1} ${w * .94},${h * .1} ${w},${h}" fill="url(#steel)" stroke="#0e1319" stroke-width="3"/>
+  <rect x="${w * .1}" y="${h * .2}" width="${w * .8}" height="${h * .22}" rx="3" fill="url(#screen)"/>
+  <text x="${w / 2}" y="${h * .37}" text-anchor="middle" font-family="monospace" font-size="${h * .14}" fill="#8af0d0">POWER ● COLOR SEQ</text>
+  ${order.map((c, i) => `<circle cx="${w * (.2 + i * .2)}" cy="${h * .68}" r="${h * .13}" fill="${c}" stroke="#111" stroke-width="3"/><circle cx="${w * (.2 + i * .2)}" cy="${h * .68}" r="${h * .24}" fill="${c}" opacity=".12"/>`).join('')}`;
+};
+A.machine = (w, h) => `<rect width="${w}" height="${h}" rx="8" fill="url(#steel)" stroke="#0d1218" stroke-width="4"/>
+  <rect x="${w * .08}" y="${h * .06}" width="${w * .84}" height="${h * .26}" rx="4" fill="#0a1418" stroke="#566" stroke-width="3"/>
+  <text x="${w / 2}" y="${h * .2}" text-anchor="middle" font-family="monospace" font-size="${h * .07}" fill="#d6b477">CENTRAL UNIT — OFFLINE</text>
+  <circle cx="${w * .3}" cy="${h * .5}" r="${h * .1}" fill="#1b2630" stroke="#d6b477" stroke-width="3"/><circle cx="${w * .3}" cy="${h * .5}" r="${h * .04}" fill="#c65d32"/>
+  <circle cx="${w * .7}" cy="${h * .5}" r="${h * .1}" fill="#1b2630" stroke="#d6b477" stroke-width="3"/><circle cx="${w * .7}" cy="${h * .5}" r="${h * .04}" fill="#c65d32"/>
+  ${['A', 'B', 'C', 'D'].map((l, i) => `<rect x="${w * (.14 + i * .2)}" y="${h * .7}" width="${w * .1}" height="${h * .12}" rx="3" fill="#10151b" stroke="#667" stroke-width="2"/>
+  <rect x="${w * (.165 + i * .2)}" y="${h * .72}" width="${w * .05}" height="${h * .06}" fill="#c65d32"/>
+  <text x="${w * (.19 + i * .2)}" y="${h * .9}" text-anchor="middle" font-family="monospace" font-size="${h * .055}" fill="#aab">${l}</text>`).join('')}
+  <rect x="${w * .9}" y="${h * .4}" width="${w * .06}" height="${h * .45}" fill="#2a3540"/>`;
+  
