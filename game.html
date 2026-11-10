@@ -9,5 +9,25 @@
   <link rel="stylesheet" href="css/game.css">
   <link rel="stylesheet" href="css/responsive.css">
 </head>
-
+<body data-page="game" class="game-page">
+  <header class="topbar">
+    <a class="brand" href="index.html">THE LAST EXIT</a>
+    <div class="hud">
+      <div class="hud-box"><span class="hud-k">Player</span><span class="hud-v" id="hud-player">—</span></div>
+      <div class="hud-box"><span class="hud-k">Score</span><span class="hud-v" id="hud-score">0</span></div>
+      <div class="hud-box"><span class="hud-k">Time</span><span class="hud-v" id="hud-time">20:00</span></div>
+      <a class="icon-btn settings-shortcut" href="settings.html" aria-label="Game settings" title="Settings">⚙️</a>
+      <button type="button" id="sound-toggle" class="icon-btn" aria-label="Sound">🔊</button>
+    </div>
+  </header>
+  
+  <script src="js/storage.js"></script>
+  <script src="js/score.js"></script>
+  <script src="js/timer.js"></script>
+  <script src="js/inventory.js"></script>
+  <script src="js/puzzles.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/main.js"></script>
+</body>
 </html>
