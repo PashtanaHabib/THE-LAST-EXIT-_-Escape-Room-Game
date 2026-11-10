@@ -322,3 +322,20 @@ function buildSvg(room) {
   body += `<rect width="${W}" height="${H}" fill="url(#vig)"/><rect width="${W}" height="${H}" filter="url(#grain)"/>`;
   return frame(body);
 }
+// 10. Generate and Save Room Images Using Playwright
+
+(async () => {
+  const { chromium } = require('playwright');
+  const browser = await chromium.launch();
+  const page = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });
+  const outDir = path.join(root, 'assets/images');
+  fs.mkdirSync(outDir, { recursive: true });
+  const files = { office: 'office.jpg', library: 'library.jpg', laboratory: 'laboratory.jpg', final: 'final-room.jpg' };
+  for (const room of ROOMS) {
+    const svg = buildSvg(room);
+    await page.setContent(`<html><body style="margin:0;background:#000">${svg}</body></html>`);
+    await page.screenshot({ path: path.join(outDir, files[room.key]), type: 'jpeg', quality: 88, clip: { x: 0, y: 0, width: W, height: H } });
+    console.log('created', files[room.key]);
+  }
+  await browser.close();
+})();
