@@ -164,3 +164,82 @@ function updateRoomUI() {
   document.getElementById("hud-total").textContent =
     gameState.solvedPuzzles.length + " / " + getTotalPuzzles();
 }
+
+// clicking objects
+function handleObject(o) {
+  var room = currentRoom,
+    a = o.action;
+  var key = room.id + ":" + o.id;
+  if (gameState.viewed.indexOf(key) === -1) {
+    gameState.viewed.push(key);
+    saveGame();
+  }
+
+  if (a.type === "clue") {
+    playSound("clue");
+    var isNew = a.item ? addItem(a.item) : false;
+    var def = a.item ? getItemDef(a.item) : null;
+    var extra = isNew
+      ? '<p class="modal-note">' +
+        def.icon +
+        " <strong>" +
+        escapeHtml(def.name) +
+        "</strong> was added to your inventory.</p>"
+      : "";
+    showInfo(a.title, a.text, extra, def ? def.icon : "🔎");
+    updateRoomUI();
+    return;
+  }
+
+  if (a.type === "puzzle") {
+    if (a.requires && !isSolved(a.requires)) {
+      showInfo(o.name, a.lockedMsg || "It is locked.", "", "🔒");
+      return;
+    }
+    if (isSolved(a.puzzle)) {
+      if (a.afterSolved)
+        showInfo(a.afterSolved.title, a.afterSolved.text, "", "✅");
+      else showInfo(o.name, "You already solved this.", "", "✅");
+      return;
+    }
+    openPuzzle(a.puzzle);
+    return;
+  }
+
+  if (a.type === "door") {
+    if (isRoomCompleted(room.id)) {
+      showInfo(
+        "Door",
+        "This door is already unlocked. Return to the room selection to continue.",
+        '<div class="modal-actions"><a class="btn btn-primary" href="levels.html">Room Selection</a></div>',
+        "🚪",
+      );
+      return;
+    }
+    if (room.id === 1 && !hasItem("key")) {
+      playSound("wrong");
+      showInfo(
+        "Locked Door",
+        "You need the Brass Key from the lockbox to open this exit.",
+        "",
+        "🔒",
+      );
+      return;
+    }
+    if (!allSolved(room)) {
+      playSound("wrong");
+      showInfo(
+        "Locked Door",
+        a.lockedMsg +
+          "\n\nPuzzles solved: " +
+          countSolved(room) +
+          " / " +
+          room.puzzles.length,
+        "",
+        "🔒",
+      );
+      return;
+    }
+    completeRoom(room.id);
+  }
+}
