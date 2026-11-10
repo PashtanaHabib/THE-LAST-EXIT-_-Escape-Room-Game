@@ -40,3 +40,49 @@ function countSolved(room) {
 function allSolved(room) {
   return countSolved(room) === room.puzzles.length;
 }
+
+// modal
+function openModal(html, onClose) {
+  var overlay = document.getElementById("modal-overlay");
+  document.getElementById("modal-content").innerHTML = html;
+  modalOnClose = onClose || null;
+  overlay.hidden = false;
+  var box = document.getElementById("modal-box");
+  box.classList.remove("shake");
+  var focusEl = box.querySelector("input, .btn-primary, button");
+  if (focusEl)
+    setTimeout(function () {
+      focusEl.focus();
+    }, 30);
+}
+
+function closeModal() {
+  var overlay = document.getElementById("modal-overlay");
+  if (!overlay || overlay.hidden) return;
+  overlay.hidden = true;
+  document.getElementById("modal-content").innerHTML = "";
+  puzzleState = null;
+  var cb = modalOnClose;
+  modalOnClose = null;
+  if (typeof cb === "function") cb();
+}
+
+function isModalOpen() {
+  var o = document.getElementById("modal-overlay");
+  return !!o && !o.hidden;
+}
+
+function showInfo(title, text, extra, icon) {
+  var html =
+    '<div class="modal-head"><span class="modal-icon">' +
+    (icon || "🔎") +
+    "</span><h2>" +
+    escapeHtml(title) +
+    "</h2></div>" +
+    '<p class="modal-text">' +
+    escapeHtml(text).replace(/\n/g, "<br>") +
+    "</p>" +
+    (extra || "") +
+    '<div class="modal-actions"><button type="button" class="btn btn-primary" data-close>Close</button></div>';
+  openModal(html);
+}
