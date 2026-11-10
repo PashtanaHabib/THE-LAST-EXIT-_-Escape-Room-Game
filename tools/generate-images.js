@@ -307,3 +307,18 @@ function sceneFinal() {
 
 const SCENES = { office: sceneOffice, library: sceneLibrary, laboratory: sceneLab, final: sceneFinal };
 const DOOR_STYLE = { office: { base: '#3a281c' }, library: { base: '#2b1d14' }, laboratory: { base: '#2c3844', window: true } };
+// 9. Build Complete SVG Images for Each Room
+
+function buildSvg(room) {
+  let body = SCENES[room.key]();
+  for (const o of room.objects) {
+    const [bx, by, bw, bh] = o.box;
+    const x = P(bx, W), y = P(by, H), w = P(bw, W), h = P(bh, H);
+    const fn = A[o.art];
+    if (!fn) { console.warn('missing art', o.art); continue; }
+    const opts = o.art === 'door' ? (DOOR_STYLE[room.key] || {}) : {};
+    body += `<g transform="translate(${x},${y})" filter="url(#shadow)">${fn(w, h, opts)}</g>`;
+  }
+  body += `<rect width="${W}" height="${H}" fill="url(#vig)"/><rect width="${W}" height="${H}" filter="url(#grain)"/>`;
+  return frame(body);
+}
