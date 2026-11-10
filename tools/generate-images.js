@@ -190,4 +190,35 @@ A.machine = (w, h) => `<rect width="${w}" height="${h}" rx="8" fill="url(#steel)
   <rect x="${w * (.165 + i * .2)}" y="${h * .72}" width="${w * .05}" height="${h * .06}" fill="#c65d32"/>
   <text x="${w * (.19 + i * .2)}" y="${h * .9}" text-anchor="middle" font-family="monospace" font-size="${h * .055}" fill="#aab">${l}</text>`).join('')}
   <rect x="${w * .9}" y="${h * .4}" width="${w * .06}" height="${h * .45}" fill="#2a3540"/>`;
-  
+  // 6. Create Final Room Object Illustrations
+
+/* ---- final room ---- */
+A.wallposter = (w, h) => `<polygon points="0,${h * .05} ${w * .9},0 ${w},${h * .92} ${w * .1},${h}" fill="#cfc7ae" stroke="#555" stroke-width="2"/>
+  <path d="M${w * .15} ${h * .25}h${w * .65}M${w * .15} ${h * .42}h${w * .6}M${w * .15} ${h * .59}h${w * .5}M${w * .15} ${h * .76}h${w * .3}" stroke="#555" stroke-width="4"/>`;
+A.terminal = (w, h) => `<rect x="${w * .05}" y="0" width="${w * .9}" height="${h * .72}" rx="10" fill="#161b21" stroke="#3b4651" stroke-width="4"/>
+  <rect x="${w * .12}" y="${h * .08}" width="${w * .76}" height="${h * .52}" rx="6" fill="url(#screen)"/>
+  <text x="${w * .16}" y="${h * .25}" font-family="monospace" font-size="${h * .07}" fill="#8af0d0">TERMINAL v2.1</text>
+  <text x="${w * .16}" y="${h * .38}" font-family="monospace" font-size="${h * .07}" fill="#8af0d0">ENTER WORD &gt; _</text>
+  <rect x="${w * .38}" y="${h * .72}" width="${w * .24}" height="${h * .1}" fill="#1a212a"/>
+  <rect x="${w * .1}" y="${h * .84}" width="${w * .8}" height="${h * .14}" rx="5" fill="#18202a" stroke="#2c3744" stroke-width="2"/>`;
+A.wallnote = (w, h) => `<rect width="${w}" height="${h}" fill="#bdb59c" stroke="#555" stroke-width="2" transform="rotate(3 ${w / 2} ${h / 2})"/>
+  <path d="M${w * .15} ${h * .3}l${w * .2} ${h * .05}M${w * .15} ${h * .5}l${w * .6}-${h * .05}M${w * .15} ${h * .7}l${w * .4} ${h * .04}" stroke="#444" stroke-width="3"/>`;
+A.gate = (w, h) => `<rect x="-10" y="-10" width="${w + 20}" height="${h + 10}" fill="#0b0e13" stroke="#2d3844" stroke-width="4"/>
+  <rect width="${w / 2 - 2}" height="${h}" fill="url(#steel)" stroke="#0d1218" stroke-width="3"/>
+  <rect x="${w / 2 + 2}" width="${w / 2 - 2}" height="${h}" fill="url(#steel)" stroke="#0d1218" stroke-width="3"/>
+  ${[0.15, 0.4, 0.65, 0.88].map(f => `<rect x="${w * .06}" y="${h * f}" width="${w * .38}" height="${h * .06}" fill="rgba(0,0,0,.3)"/><rect x="${w * .56}" y="${h * f}" width="${w * .38}" height="${h * .06}" fill="rgba(0,0,0,.3)"/>`).join('')}
+  <rect x="${w * .46}" y="0" width="${w * .08}" height="${h}" fill="#e6b41f" opacity=".85"/>
+  ${Array.from({ length: 12 }).map((_, i) => `<polygon points="${w * .46},${i * h / 12} ${w * .54},${i * h / 12 + h / 24} ${w * .54},${i * h / 12 + h / 12} ${w * .46},${i * h / 12 + h / 24}" fill="#111" opacity=".75"/>`).join('')}
+  <rect x="${w * .62}" y="${h * .45}" width="${w * .3}" height="${h * .16}" rx="6" fill="#0b0f14" stroke="#d6b477" stroke-width="3"/>
+  <text x="${w * .77}" y="${h * .565}" text-anchor="middle" font-family="monospace" font-size="${h * .075}" fill="#ff4a3a">_ _ _</text>
+  <circle cx="${w / 2}" cy="${-h * .04}" r="12" fill="#ff4a2a"/>`;
+A.warnsign = (w, h) => `<polygon points="${w / 2},0 ${w},${h * .9} 0,${h * .9}" fill="#e6b41f" stroke="#111" stroke-width="5"/>
+  <text x="${w / 2}" y="${h * .75}" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="${h * .55}" fill="#111">!</text>`;
+A.breaker = (w, h) => {
+  const cols = ['#2fae5b', '#d93a3a', '#e6c229', '#2e7bd6'];
+  return `<rect width="${w}" height="${h}" rx="6" fill="url(#steel)" stroke="#0d1218" stroke-width="4"/>
+  <text x="${w / 2}" y="${h * .12}" text-anchor="middle" font-family="monospace" font-size="${h * .07}" fill="#d6b477">BREAKERS</text>
+  ${cols.map((c, i) => `<rect x="${w * (.1 + i * .22)}" y="${h * .2}" width="${w * .16}" height="${h * .62}" rx="4" fill="#10151b" stroke="#556" stroke-width="2"/>
+  <rect x="${w * (.12 + i * .22)}" y="${h * (.28 + (i % 2) * .22)}" width="${w * .12}" height="${h * .2}" rx="4" fill="${c}"/>
+  <circle cx="${w * (.18 + i * .22)}" cy="${h * .9}" r="6" fill="${c}"/>`).join('')}`;
+};
