@@ -157,3 +157,70 @@
     background: rgba(78, 194, 127, 0.14);
   }
 }
+
+/* side panel */
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.side .panel h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.count {
+  margin-left: auto;
+  font:
+    700 0.8rem "Courier New",
+    monospace;
+  padding: 1px 9px;
+  border-radius: 99px;
+  background: #26313d;
+  color: var(--text);
+}
+.inv-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 52vh;
+  overflow-y: auto;
+}
+.inv-empty {
+  color: var(--muted);
+  font-size: 0.88rem;
+  margin: 0;
+}
+.inv-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  text-align: left;
+  background: #1b2430;
+  color: var(--text);
+  border: 1px solid #2b3a4a;
+  border-radius: 8px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+}
+.inv-item:hover {
+  border-color: var(--gold);
+  background: #202c3a;
+}
+.inv-item.new {
+  animation: new-item 1.4s;
+}
+@keyframes new-item {
+  0% {
+    box-shadow: 0 0 0 0 rgba(214, 180, 119, 0.9);
+  }
+  100% {
+    box-shadow: 0 0 0 16px rgba(214, 180, 119, 0);
+  }
+}
+.inv-icon {
+  font-size: 1.25rem;
+}
