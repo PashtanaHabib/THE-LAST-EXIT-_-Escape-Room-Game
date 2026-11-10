@@ -135,7 +135,7 @@ A.tablet = (w, h) => `<rect width="${w}" height="${h}" rx="6" fill="#59595f" str
 A.painting = (w, h) => `<rect width="${w}" height="${h}" fill="url(#brass)" stroke="#3a2a0e" stroke-width="3"/>
   <rect x="${w * .07}" y="${h * .05}" width="${w * .86}" height="${h * .9}" fill="url(#sky)"/>
   ${[[.2, .15], [.7, .2], [.45, .3], [.8, .45], [.25, .5], [.6, .12]].map(p => `<circle cx="${w * p[0]}" cy="${h * p[1]}" r="2.4" fill="#fff"/>`).join('')}
-  <path d="M${w * .28} ${h * .26}a${w * .1} ${w * .1} 0 1 0 ${w * .1} ${h * .13}a${w * .08} ${w * .08} 0 1 1-${w * .1}-${h * .13}z" fill="#e8dfa8"/>
+  <path d="M${w * .28} ${h * .26}a${w * .1} ${w * .1} 0 1 0 ${w * .1} ${w * .13}a${w * .08} ${w * .08} 0 1 1-${w * .1}-${h * .13}z" fill="#e8dfa8"/>
   <ellipse cx="${w * .5}" cy="${h * .7}" rx="${w * .3}" ry="${h * .1}" fill="#e8e8f0"/><circle cx="${w * .5}" cy="${h * .7}" r="${h * .075}" fill="#3a6aa8"/><circle cx="${w * .5}" cy="${h * .7}" r="${h * .035}" fill="#000"/>`;
 A.lamp = (w, h) => `<polygon points="${w * .12},${h * .42} ${w * .88},${h * .42} ${w * .68},${h * .08} ${w * .32},${h * .08}" fill="#d9a85a" stroke="#6a4a1a" stroke-width="3"/>
   <rect x="${w * .46}" y="${h * .42}" width="${w * .08}" height="${h * .46}" fill="#6a4a1a"/>
@@ -222,3 +222,50 @@ A.breaker = (w, h) => {
   <rect x="${w * (.12 + i * .22)}" y="${h * (.28 + (i % 2) * .22)}" width="${w * .12}" height="${h * .2}" rx="4" fill="${c}"/>
   <circle cx="${w * (.18 + i * .22)}" cy="${h * .9}" r="6" fill="${c}"/>`).join('')}`;
 };
+// 7. Build SVG Frames and Office/Library Background Scenes
+
+/* ---------------- scenes (background + decor) ---------------- */
+function frame(inner) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${DEFS}${inner}</svg>`;
+}
+const P = (n, t) => px(n, t);
+
+function sceneOffice() {
+  const fy = P(70, H);
+  return `
+  <rect width="${W}" height="${H}" fill="#121922"/>
+  <rect width="${W}" height="${fy}" fill="#18212c"/>
+  ${Array.from({ length: 14 }).map((_, i) => `<rect x="${i * 120}" y="0" width="2" height="${fy}" fill="rgba(255,255,255,.025)"/>`).join('')}
+  <rect y="${fy - 24}" width="${W}" height="24" fill="#0e1218"/>
+  <rect y="${fy}" width="${W}" height="${H - fy}" fill="#0b0e13"/>
+  <polygon points="${P(14, W)},${fy} ${P(86, W)},${fy} ${P(95, W)},${H} ${P(5, W)},${H}" fill="#241915" opacity=".85"/>
+  <rect x="${P(4, W)}" y="${P(10, H)}" width="${P(14, W)}" height="${P(34, H)}" fill="#0a1226" stroke="#05070a" stroke-width="8"/>
+  ${Array.from({ length: 14 }).map((_, i) => `<rect x="${P(4, W)}" y="${P(10, H) + i * 22 + 6}" width="${P(14, W)}" height="9" fill="#06080c" opacity=".7"/>`).join('')}
+  <polygon points="${P(4, W)},${P(44, H)} ${P(18, W)},${P(44, H)} ${P(28, W)},${H} ${P(0, W)},${H}" fill="url(#beam)"/>
+  <circle cx="${P(48.5, W)}" cy="${P(12, H)}" r="38" fill="#d9d5c8" stroke="#0a0d12" stroke-width="6"/>
+  <path d="M${P(48.5, W)} ${P(12, H)}v-26M${P(48.5, W)} ${P(12, H)}l16 10" stroke="#111" stroke-width="4"/>
+  <rect x="${P(18, W)}" y="${P(58, H)}" width="${P(62, W)}" height="${P(1.8, H)}" fill="#5a3f2a"/>
+  <rect x="${P(19, W)}" y="${P(59.8, H)}" width="${P(60, W)}" height="${P(25, H)}" fill="url(#wood)"/>
+  <rect x="${P(19, W)}" y="${P(59.8, H)}" width="${P(2, W)}" height="${P(29, H)}" fill="#1f130b"/><rect x="${P(77, W)}" y="${P(59.8, H)}" width="${P(2, W)}" height="${P(29, H)}" fill="#1f130b"/>
+  <rect x="${P(46, W)}" y="${P(63, H)}" width="${P(17, W)}" height="${P(13, H)}" rx="4" fill="none" stroke="rgba(0,0,0,.5)" stroke-width="3"/>
+  <ellipse cx="${P(57, W)}" cy="${P(48, H)}" rx="300" ry="240" fill="url(#warm)"/>`;
+}
+function sceneLibrary() {
+  const fy = P(72, H), r = rng(5);
+  const cols = ['#4a1f1f', '#1f3250', '#1f4a33', '#4a3a1f', '#3a1f4a', '#555', '#2a2a36'];
+  let books = '';
+  for (let row = 0; row < 6; row++) {
+    let x = 0; const by = 20 + row * 90;
+    while (x < W) { const bw = 14 + r() * 18, bh = 55 + r() * 30; books += `<rect x="${x}" y="${by + 80 - bh}" width="${bw}" height="${bh}" fill="${cols[Math.floor(r() * cols.length)]}" opacity=".75"/>`; x += bw + 1; }
+    books += `<rect y="${by + 80}" width="${W}" height="10" fill="#1b110a"/>`;
+  }
+  return `
+  <rect width="${W}" height="${H}" fill="#0d0a08"/>${books}
+  <rect y="${fy}" width="${W}" height="${H - fy}" fill="#0b0806"/>
+  <rect y="${fy - 14}" width="${W}" height="14" fill="#0b0705"/>
+  <polygon points="${P(15, W)},${fy + 10} ${P(88, W)},${fy + 10} ${P(95, W)},${H} ${P(8, W)},${H}" fill="#2b1414" opacity=".8"/>
+  <rect x="${P(28, W)}" y="${P(62, H)}" width="${P(69, W)}" height="${P(2, H)}" fill="#6a4a2a"/>
+  <rect x="${P(29, W)}" y="${P(64, H)}" width="${P(67, W)}" height="${P(22, H)}" fill="url(#wood)"/>
+  <rect x="${P(30, W)}" y="${P(64, H)}" width="${P(2, W)}" height="${P(26, H)}" fill="#1a0f08"/><rect x="${P(93, W)}" y="${P(64, H)}" width="${P(2, W)}" height="${P(26, H)}" fill="#1a0f08"/>
+  <ellipse cx="${P(70, W)}" cy="${P(48, H)}" rx="260" ry="240" fill="url(#warm)"/>`;
+}
