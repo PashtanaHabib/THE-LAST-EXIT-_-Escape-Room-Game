@@ -1,64 +1,107 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Game Room — THE LAST EXIT</title>
-  <meta name="description" content="THE LAST EXIT — a browser escape-room puzzle game. Four rooms. One escape. No second chance.">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/game.css">
-  <link rel="stylesheet" href="css/responsive.css">
-</head>
-<body data-page="game" class="game-page">
-  <header class="topbar">
-    <a class="brand" href="index.html">THE LAST EXIT</a>
-    <div class="hud">
-      <div class="hud-box"><span class="hud-k">Player</span><span class="hud-v" id="hud-player">—</span></div>
-      <div class="hud-box"><span class="hud-k">Score</span><span class="hud-v" id="hud-score">0</span></div>
-      <div class="hud-box"><span class="hud-k">Time</span><span class="hud-v" id="hud-time">20:00</span></div>
-      <a class="icon-btn settings-shortcut" href="settings.html" aria-label="Game settings" title="Settings">⚙️</a>
-      <button type="button" id="sound-toggle" class="icon-btn" aria-label="Sound">🔊</button>
-    </div>
-  </header>
-  <div class="game-layout">
-    <section class="game-main">
-      <div class="room-bar">
-        <a class="btn btn-ghost btn-small" href="levels.html">← Rooms</a>
-        <h1 id="room-title" class="room-title">ROOM</h1>
-        <span id="room-diff" class="badge">—</span>
-        <span class="room-prog">Puzzles <strong id="room-progress">0 / 3</strong></span>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Game Room — THE LAST EXIT</title>
+    <meta
+      name="description"
+      content="THE LAST EXIT — a browser escape-room puzzle game. Four rooms. One escape. No second chance."
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/game.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+  </head>
+  <body data-page="game" class="game-page">
+    <header class="topbar">
+      <a class="brand" href="index.html">THE LAST EXIT</a>
+      <div class="hud">
+        <div class="hud-box">
+          <span class="hud-k">Player</span
+          ><span class="hud-v" id="hud-player">—</span>
+        </div>
+        <div class="hud-box">
+          <span class="hud-k">Score</span
+          ><span class="hud-v" id="hud-score">0</span>
+        </div>
+        <div class="hud-box">
+          <span class="hud-k">Time</span
+          ><span class="hud-v" id="hud-time">20:00</span>
+        </div>
+        <a
+          class="icon-btn settings-shortcut"
+          href="settings.html"
+          aria-label="Game settings"
+          title="Settings"
+          >⚙️</a
+        >
+        <button
+          type="button"
+          id="sound-toggle"
+          class="icon-btn"
+          aria-label="Sound"
+        >
+          🔊
+        </button>
       </div>
-      <div class="stage-wrap"><div id="stage" class="stage"></div></div>
-      <p class="objective"><span class="eyebrow">Objective</span> <span id="objective"></span></p>
-    </section>
+    </header>
+    <div class="game-layout">
+      <section class="game-main">
+        <div class="room-bar">
+          <a class="btn btn-ghost btn-small" href="levels.html">← Rooms</a>
+          <h1 id="room-title" class="room-title">ROOM</h1>
+          <span id="room-diff" class="badge">—</span>
+          <span class="room-prog"
+            >Puzzles <strong id="room-progress">0 / 3</strong></span
+          >
+        </div>
+        <div class="stage-wrap"><div id="stage" class="stage"></div></div>
+        <p class="objective">
+          <span class="eyebrow">Objective</span> <span id="objective"></span>
+        </p>
+      </section>
 
-    <aside class="side">
-      <div class="panel inv-panel">
-        <h2>🎒 Inventory <span class="count" id="inventory-count">0</span></h2>
-        <div id="inventory-list" class="inv-list"></div>
-      </div>
-      <div class="panel">
-        <h2>🧩 Progress</h2>
-        <div class="bar"><div id="room-bar"></div></div>
-        <p class="muted small">Total solved: <strong id="hud-total">0 / 12</strong></p>
-        <p class="muted small">Tip: hover over objects to see their names. Glowing dots mean "not inspected yet".</p>
-      </div>
-    </aside>
-  </div>
-
-  <div id="modal-overlay" class="modal-overlay" hidden>
-    <div id="modal-box" class="modal-box" role="dialog" aria-modal="true">
-      <div id="modal-content"></div>
-      <button type="button" id="modal-close" class="modal-close" aria-label="Close">×</button>
+      <aside class="side">
+        <div class="panel inv-panel">
+          <h2>
+            🎒 Inventory <span class="count" id="inventory-count">0</span>
+          </h2>
+          <div id="inventory-list" class="inv-list"></div>
+        </div>
+        <div class="panel">
+          <h2>🧩 Progress</h2>
+          <div class="bar"><div id="room-bar"></div></div>
+          <p class="muted small">
+            Total solved: <strong id="hud-total">0 / 12</strong>
+          </p>
+          <p class="muted small">
+            Tip: hover over objects to see their names. Glowing dots mean "not
+            inspected yet".
+          </p>
+        </div>
+      </aside>
     </div>
-  </div>
-  <script src="js/storage.js"></script>
-  <script src="js/score.js"></script>
-  <script src="js/timer.js"></script>
-  <script src="js/inventory.js"></script>
-  <script src="js/puzzles.js"></script>
-  <script src="js/game.js"></script>
-  <script src="js/settings.js"></script>
-  <script src="js/main.js"></script>
-</body>
+
+    <div id="modal-overlay" class="modal-overlay" hidden>
+      <div id="modal-box" class="modal-box" role="dialog" aria-modal="true">
+        <div id="modal-content"></div>
+        <button
+          type="button"
+          id="modal-close"
+          class="modal-close"
+          aria-label="Close"
+        >
+          ×
+        </button>
+      </div>
+    </div>
+    <script src="js/storage.js"></script>
+    <script src="js/score.js"></script>
+    <script src="js/timer.js"></script>
+    <script src="js/inventory.js"></script>
+    <script src="js/puzzles.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/main.js"></script>
+  </body>
 </html>
