@@ -78,3 +78,19 @@ function fillHud() {
   updateScoreDisplay();
   updateTimerDisplay();
 }
+
+/* ---------- LEADERBOARD RESET ---------- */
+function resetLeaderboard(buttonId, onReset) {
+  var button = document.getElementById(buttonId);
+  if (!button) return;
+  button.addEventListener('click', function () {
+    if (!getRecords().length) {
+      if (typeof onReset === 'function') onReset();
+      return;
+    }
+    if (!window.confirm('Delete all saved leaderboard records from this browser? Your active game will not be deleted.')) return;
+    clearRecords();
+    if (typeof onReset === 'function') onReset();
+    playSound('click');
+  });
+}
