@@ -17,7 +17,59 @@
     <button type="button" id="sound-toggle" class="icon-btn" aria-label="Sound">🔊</button>
   </header>
 
- 
+  <main class="page settings-page">
+    <p class="kicker">Customize your experience</p>
+    <h1 class="page-title">Game Settings</h1>
+    <p class="settings-intro">Adjust the atmosphere, sound and visual effects to make your escape feel right.</p>
+
+    <section class="panel settings-panel">
+      <div class="settings-section">
+        <div class="settings-heading"><span class="settings-icon">🔊</span><div><h2>Audio</h2><p>Control the sound inside the game.</p></div></div>
+        <label class="setting-row" for="setting-sound-enabled">
+          <span><strong>Sound effects</strong><small>Clicks, clues, puzzles and alerts</small></span>
+          <input id="setting-sound-enabled" type="checkbox">
+        </label>
+        <label class="setting-range" for="setting-effects-volume">
+          <span><strong>Effects volume</strong><output id="effects-volume-value">80%</output></span>
+          <input id="setting-effects-volume" type="range" min="0" max="100" step="5">
+        </label>
+        <label class="setting-range" for="setting-ambient-volume">
+          <span><strong>Adventure soundtrack volume</strong><output id="ambient-volume-value">35%</output></span>
+          <input id="setting-ambient-volume" type="range" min="0" max="100" step="5">
+          <small>Continuous cinematic adventure music. Press Begin to start it if your browser blocks autoplay.</small>
+        </label>
+      </div>
+
+      <div class="settings-divider"></div>
+
+      <div class="settings-section">
+        <div class="settings-heading"><span class="settings-icon">✨</span><div><h2>Visual Effects</h2><p>Choose how dramatic the game should look.</p></div></div>
+        <label class="setting-row" for="setting-transitions">
+          <span><strong>Room transitions</strong><small>Fade-out and cinematic room title between pages</small></span>
+          <input id="setting-transitions" type="checkbox">
+        </label>
+        <label class="setting-row" for="setting-shake">
+          <span><strong>Screen shake</strong><small>Small shake after a wrong answer</small></span>
+          <input id="setting-shake" type="checkbox">
+        </label>
+        <label class="setting-select" for="setting-motion">
+          <span><strong>Animation level</strong><small>Reduce motion if you prefer a calmer experience</small></span>
+          <select id="setting-motion">
+            <option value="full">Full animations</option>
+            <option value="reduced">Reduced animations</option>
+            <option value="off">Animations off</option>
+          </select>
+        </label>
+      </div>
+
+      <p id="settings-feedback" class="settings-feedback" role="status">Your settings are saved automatically.</p>
+      <div class="settings-actions">
+        <button type="button" id="reset-settings" class="btn btn-ghost">Restore Defaults</button>
+        <button type="button" id="close-settings" class="btn btn-primary">Close</button>
+      </div>
+    </section>
+    <p class="center settings-footnote">Settings are saved on this device using LocalStorage.</p>
+  </main>
 
   <script src="js/storage.js"></script>
   <script src="js/score.js"></script>
