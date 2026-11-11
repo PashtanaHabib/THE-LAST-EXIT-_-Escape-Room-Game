@@ -16,7 +16,34 @@
     <a class="icon-btn settings-shortcut" href="settings.html" aria-label="Game settings" title="Settings">⚙️</a>
       <button type="button" id="sound-toggle" class="icon-btn" aria-label="Sound">🔊</button>
   </header>
-  
+  <main class="page result">
+    <p id="result-kicker" class="kicker">RESULT</p>
+    <h1 id="result-title" class="title">—</h1>
+    <p id="result-msg" class="story"></p>
+
+    <div class="stats">
+      <div class="stat"><span class="stat-k">Player</span><span class="stat-v" id="res-name">—</span></div>
+      <div class="stat big"><span class="stat-k">Final score</span><span class="stat-v" id="res-score">0</span></div>
+      <div class="stat"><span class="stat-k">Time remaining</span><span class="stat-v" id="res-time">00:00</span></div>
+      <div class="stat"><span class="stat-k">Puzzles solved</span><span class="stat-v" id="res-puzzles">0 / 12</span></div>
+      <div class="stat"><span class="stat-k">Wrong answers</span><span class="stat-v" id="res-wrong">0</span></div>
+      <div class="stat"><span class="stat-k">Hints used</span><span class="stat-v" id="res-hints">0</span></div>
+    </div>
+
+    <div class="center actions">
+      <a id="play-again" class="btn btn-primary btn-big" href="levels.html">Play Again</a>
+      <a class="btn btn-ghost btn-big" href="index.html">Home</a>
+    </div>
+
+    <section class="panel records">
+      <h2>🏆 Best records <span class="muted small">(this browser)</span></h2>
+      <button type="button" id="reset-records-result" class="btn btn-reset-records btn-small">Reset Leaderboard</button>
+      <table class="rec-table">
+        <thead><tr><th>#</th><th>Player</th><th>Score</th><th>Time left</th></tr></thead>
+        <tbody id="records-body"></tbody>
+      </table>
+    </section>
+  </main>
   <script src="js/storage.js"></script>
   <script src="js/score.js"></script>
   <script src="js/timer.js"></script>
