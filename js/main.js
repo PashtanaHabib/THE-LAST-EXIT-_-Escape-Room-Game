@@ -241,3 +241,14 @@ function initResult() {
     window.location.href = 'levels.html';
   });
 }
+
+/* ---------- start ---------- */
+document.addEventListener('DOMContentLoaded', function () {
+  initSoundToggle();
+  var page = document.body.getAttribute('data-page');
+  if (page === 'home') initHome();
+  else if (page === 'instructions') initInstructions();
+  else if (page === 'levels') initLevels();
+  else if (page === 'game') initGamePage();
+  else if (page === 'result') initResult();
+});
