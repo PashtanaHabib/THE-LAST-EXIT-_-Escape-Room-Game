@@ -72,3 +72,22 @@ img { max-width: 100%; display: block; }
   background: var(--surface); color: var(--text); font-size: 1.05rem; cursor: pointer;
 }
 .icon-btn:hover { border-color: var(--gold); }
+
+/* buttons */
+.btn {
+  display: inline-block; cursor: pointer; text-decoration: none; text-align: center;
+  padding: 10px 20px; border-radius: 8px; border: 1px solid transparent;
+  font: 600 .95rem var(--font-body); letter-spacing: .03em; color: var(--text);
+  transition: transform .12s, background .15s, border-color .15s, box-shadow .15s;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+.btn-primary { background: var(--accent); color: #fff; box-shadow: 0 4px 18px rgba(198, 93, 50, .35); }
+.btn-primary:hover { background: #d96a3c; }
+.btn-gold { background: var(--gold); color: #1b1408; }
+.btn-gold:hover { background: #e4c488; }
+.btn-ghost { background: transparent; border-color: #38465a; color: var(--text); }
+.btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+.btn-disabled, .btn:disabled { background: #1d2631; color: #66717e; cursor: not-allowed; transform: none; box-shadow: none; }
+.btn-big { padding: 13px 28px; font-size: 1.05rem; }
+.btn-small { padding: 6px 12px; font-size: .85rem; }
