@@ -195,3 +195,49 @@ function initLevels() {
 
   startTimer(null, function () { finishGame(false); });
 }
+
+/* ---------- RESULT ---------- */
+function initResult() {
+  if (!requireGame()) return;
+  if (gameState.status === 'playing') { window.location.replace('levels.html'); return; }
+  var won = gameState.status === 'won';
+  document.body.classList.add(won ? 'victory' : 'gameover');
+
+  document.getElementById('result-kicker').textContent = won ? 'YOU ESCAPED' : 'GAME OVER';
+  document.getElementById('result-title').textContent = won ? 'Victory!' : "Time's Up";
+  document.getElementById('result-msg').textContent = won
+    ? 'The gate opens and the night air hits your face. You solved every puzzle in THE LAST EXIT.'
+    : 'The countdown reached zero and the doors sealed forever. Dr. Voss\'s trap claimed another one.';
+
+  document.getElementById('res-name').textContent = gameState.playerName;
+  document.getElementById('res-score').textContent = gameState.score;
+  document.getElementById('res-time').textContent = formatTime(gameState.timeLeft);
+  document.getElementById('res-puzzles').textContent = gameState.solvedPuzzles.length + ' / ' + getTotalPuzzles();
+  document.getElementById('res-wrong').textContent = gameState.wrongAnswers;
+  document.getElementById('res-hints').textContent = gameState.hintsUsed.length;
+
+  var records = getRecords();
+  var tbody = document.getElementById('records-body');
+  tbody.innerHTML = '';
+  if (!records.length) {
+    tbody.innerHTML = '<tr><td colspan="4" class="muted">No records yet. Escape to set one!</td></tr>';
+  } else {
+    records.forEach(function (r, i) {
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td>' + (i + 1) + '</td><td>' + escapeHtml(r.name) + '</td><td>' + r.score + '</td><td>' + formatTime(r.timeLeft) + '</td>';
+      tbody.appendChild(tr);
+    });
+  }
+
+  resetLeaderboard('reset-records-result', function () {
+    tbody.innerHTML = '<tr><td colspan="4" class="muted">No records yet. Escape to set one!</td></tr>';
+    showToast('Leaderboard cleared. Your active game is safe.');
+  });
+
+  document.getElementById('play-again').addEventListener('click', function (e) {
+    e.preventDefault();
+    playSound('click');
+    newGame(gameState.playerName);
+    window.location.href = 'levels.html';
+  });
+}
