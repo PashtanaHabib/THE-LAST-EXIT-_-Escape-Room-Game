@@ -40,3 +40,135 @@ ar ITEMS = {
   warnsign:  { id: 'warnsign',  name: 'Warning Sign',    icon: '🚧', desc: 'WARNING: "Breakers must be switched in REVERSE order of the reactor sequence."' },
   wallnote:  { id: 'wallnote',  name: 'Scratched Note',  icon: '🗒️', desc: 'Scratched into the wall: "Three digits. One from each room. In the order you walked."' }
 };
+
+/* ---------- The 12 puzzles ---------- */
+var PUZZLES = {
+  /* ===== ROOM 1 — OFFICE ===== */
+  p1: {
+    id: 'p1', room: 1, title: 'Computer Password', type: 'text', icon: '🖥️',
+    prompt: 'The computer is locked. A blinking cursor waits for a password.',
+    placeholder: 'PASSWORD', answers: ['rex'],
+    hint: 'Read the sticky note, then look closely at the photo on the desk.',
+    success: 'ACCESS GRANTED. A new email appears on the screen.',
+    reward: ['email']
+  },
+  p2: {
+    id: 'p2', room: 1, title: 'Locked Drawer', type: 'text', icon: '🔒', digits: 4,
+    prompt: 'The desk drawer has a 4-digit keypad.',
+    placeholder: '0000', answers: ['0711'],
+    hint: 'The email says: day first, then month. The calendar has a circled date.',
+    success: 'Click! The drawer slides open. Inside you find a riddle note.',
+    reward: ['riddle']
+  },
+  p3: {
+    id: 'p3', room: 1, title: 'The Lockbox', type: 'text', icon: '📦',
+    prompt: 'The lockbox opens with a single word. Read the riddle:\n\n"I have keys but open no locks. I have space but no room. You can enter, but never go outside. What am I?"',
+    placeholder: 'ONE WORD', answers: ['keyboard', 'akeyboard'],
+    hint: 'You are probably touching one right now when you type.',
+    success: 'The lockbox opens. Inside: a brass key and a torn page with the number 7.',
+    reward: ['key', 'frag1']
+  },
+
+  /* ===== ROOM 2 — LIBRARY ===== */
+  p4: {
+    id: 'p4', room: 2, title: 'The Oldest Tale', type: 'choice', icon: '📚',
+    prompt: 'Five books glow on the shelf. The plaque says: "Seek the oldest tale." Which book do you pull out?',
+    options: [
+      { id: 'silent', label: 'The Silent Stars — 1921' },
+      { id: 'iron',   label: 'Echoes of Iron — 1887' },
+      { id: 'vienna', label: 'Shadows of Vienna — 1954' },
+      { id: 'glass',  label: 'The Glass Garden — 1799' },
+      { id: 'algebra',label: 'Midnight Algebra — 1963' }
+    ],
+    answer: 'glass',
+    hint: 'Compare the years printed next to each title. Pick the smallest number.',
+    success: 'A loose page slips out of the book. Symbols are drawn on it.',
+    reward: ['bookpage']
+  },
+  p5: {
+    id: 'p5', room: 2, title: 'Order of the Sky', type: 'sequence', icon: '☀️', unique: true,
+    prompt: 'Press the four stone symbols in the correct order. The lamp and the painting each tell part of the order.',
+    options: [
+      { id: 'eye',  label: '◉', name: 'Eye' },
+      { id: 'star', label: '★', name: 'Star' },
+      { id: 'sun',  label: '☀', name: 'Sun' },
+      { id: 'moon', label: '☾', name: 'Moon' }
+    ],
+    answer: ['sun', 'moon', 'star', 'eye'],
+    hint: 'Sun, Moon, then the Star, and the Eye is always last.',
+    success: 'The tablet clicks. A hidden compartment opens with an encrypted note.',
+    reward: ['cipher']
+  },
+  p6: {
+    id: 'p6', room: 2, title: 'The Hidden Message', type: 'text', icon: '🔐',
+    prompt: 'The wall safe displays a word that must be decoded:\n\nH A R G X V\n\nEnter the real word.',
+    placeholder: 'DECODED WORD', answers: ['exodus'],
+    hint: 'Caesar cipher. Move each letter BACK 3 steps in the alphabet: H becomes E.',
+    success: 'The safe opens! You take the secret word and a page with the number 3.',
+    reward: ['secretword', 'frag2']
+  },
+
+  /* ===== ROOM 3 — LABORATORY ===== */
+  p7: {
+    id: 'p7', room: 3, title: 'Number Sequence', type: 'text', icon: '🔢',
+    prompt: 'The chalkboard shows a sequence:\n\n2 — 6 — 12 — 20 — 30 — ?\n\nEnter the next number to power up the console.',
+    placeholder: 'NUMBER', answers: ['42'],
+    hint: 'Look at the differences: 4, 6, 8, 10 ... what comes next?',
+    success: 'Correct! The color console powers on.',
+    reward: []
+  },
+  p8: {
+    id: 'p8', room: 3, title: 'Reactor Colors', type: 'sequence', icon: '🎨', unique: true,
+    prompt: 'Press the four colors in the correct order. Three rules are posted around the laboratory (monitor, flask rack and poster).',
+    options: [
+      { id: 'red',    label: '', name: 'Red',    color: '#d93a3a' },
+      { id: 'green',  label: '', name: 'Green',  color: '#2fae5b' },
+      { id: 'blue',   label: '', name: 'Blue',   color: '#2e7bd6' },
+      { id: 'yellow', label: '', name: 'Yellow', color: '#e6c229' }
+    ],
+    answer: ['red', 'green', 'yellow', 'blue'],
+    hint: 'Red is first. Yellow and Blue are glued together (Yellow, then Blue). Green cannot be last.',
+    success: 'The reactor hums. The accepted order is saved to your inventory.',
+    reward: ['reactorseq']
+  },
+  p9: {
+    id: 'p9', room: 3, title: 'Activate the Machine', type: 'toggles', icon: '⚡',
+    prompt: 'Set the four power switches (A, B, C, D) using these rules:\n\n1. A and C are always in the same state.\n2. B is the opposite of A.\n3. D can be ON only if A is OFF.\n4. Exactly two switches are ON.\n5. A is OFF.',
+    switches: ['A', 'B', 'C', 'D'], answer: '0101',
+    hint: 'A is OFF, so C is OFF and B is ON. You need exactly two ON switches, so what about D?',
+    success: 'The machine roars to life and prints an activation ticket with the number 9.',
+    reward: ['frag3']
+  },
+
+  /* ===== ROOM 4 — THE LAST EXIT ===== */
+  p10: {
+    id: 'p10', room: 4, title: 'Terminal Password', type: 'text', icon: '💻',
+    prompt: 'TERMINAL LOCKED.\nSpeak the word the Library hid.',
+    placeholder: 'SECRET WORD', answers: ['exodus'],
+    hint: 'Open your inventory and look for the Secret Word.',
+    success: 'ACCESS GRANTED. The breaker panel unlocks.',
+    reward: []
+  },
+  p11: {
+    id: 'p11', room: 4, title: 'Breaker Panel', type: 'sequence', icon: '🔌', unique: true,
+    prompt: 'Switch the four breakers in REVERSE order of the Reactor Sequence from the Laboratory.',
+    options: [
+      { id: 'red',    label: '', name: 'Red',    color: '#d93a3a' },
+      { id: 'green',  label: '', name: 'Green',  color: '#2fae5b' },
+      { id: 'blue',   label: '', name: 'Blue',   color: '#2e7bd6' },
+      { id: 'yellow', label: '', name: 'Yellow', color: '#e6c229' }
+    ],
+    answer: ['blue', 'yellow', 'green', 'red'],
+    hint: 'The Reactor Sequence was Red, Green, Yellow, Blue. Read it backwards.',
+    success: 'Power floods the corridor. The exit gate lights up.',
+    reward: []
+  },
+  p12: {
+    id: 'p12', room: 4, title: 'The Final Gate', type: 'text', icon: '🚪', digits: 3, final: true,
+    prompt: 'The gate asks for a 3-digit code. Three fragments from three rooms... in the order you walked.',
+    placeholder: '000', answers: ['739'],
+    hint: 'Open your inventory: Gate Fragment 1, 2 and 3 each hold one digit.',
+    success: 'The gate grinds open. Cold night air rushes in. You are free.',
+    reward: []
+  }
+};
