@@ -99,3 +99,16 @@ body.gameover .kicker { color: var(--bad); }
 .rec-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
 .rec-table th, .rec-table td { padding: 8px 10px; border-bottom: 1px solid #222d3a; text-align: left; }
 .rec-table th { font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+
+/* reset local leaderboard */
+.btn-reset-records {
+  margin-top: 12px;
+  background: rgba(150, 52, 48, .12);
+  border-color: rgba(229, 88, 74, .55);
+  color: #f08a80;
+}
+.btn-reset-records:hover {
+  background: rgba(150, 52, 48, .28);
+  border-color: #e5584a;
+  color: #ffd0ca;
+}
