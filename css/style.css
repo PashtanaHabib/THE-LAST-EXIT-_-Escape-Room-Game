@@ -91,3 +91,5 @@ img { max-width: 100%; display: block; }
 .btn-disabled, .btn:disabled { background: #1d2631; color: #66717e; cursor: not-allowed; transform: none; box-shadow: none; }
 .btn-big { padding: 13px 28px; font-size: 1.05rem; }
 .btn-small { padding: 6px 12px; font-size: .85rem; }
+
+/* panels, badges */
