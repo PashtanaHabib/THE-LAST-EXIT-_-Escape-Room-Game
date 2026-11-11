@@ -141,3 +141,15 @@ function initHome() {
     });
   }
 }
+
+/* ---------- INSTRUCTIONS ---------- */
+function initInstructions() {
+  var go = document.getElementById('go-btn');
+  if (hasSavedGame()) {
+    go.textContent = 'Enter the Rooms';
+    go.setAttribute('href', 'levels.html');
+  } else {
+    go.textContent = 'Back to Home';
+    go.setAttribute('href', 'index.html');
+  }
+}
