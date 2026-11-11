@@ -17,7 +17,7 @@ function addItem(itemId) {
   saveGame();
   renderInventory(itemId);
   var def = getItemDef(itemId);
-  showToast(def.icon + '  ' + def.name + ' added to inventory');
+  showToast(def.icon + "  " + def.name + " added to inventory");
   return true;
 }
 
@@ -32,24 +32,30 @@ function removeItem(itemId) {
 }
 
 function renderInventory(newItemId) {
-  var list = document.getElementById('inventory-list');
+  var list = document.getElementById("inventory-list");
   if (!list || !gameState) return;
-  var count = document.getElementById('inventory-count');
+  var count = document.getElementById("inventory-count");
   if (count) count.textContent = gameState.inventory.length;
-  list.innerHTML = '';
+  list.innerHTML = "";
   if (!gameState.inventory.length) {
-    list.innerHTML = '<p class="inv-empty">Nothing yet. Click on objects in the room to investigate.</p>';
+    list.innerHTML =
+      '<p class="inv-empty">Nothing yet. Click on objects in the room to investigate.</p>';
     return;
   }
   gameState.inventory.forEach(function (id) {
     var def = getItemDef(id);
     if (!def) return;
-    var b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'inv-item' + (id === newItemId ? ' new' : '');
-    b.innerHTML = '<span class="inv-icon">' + def.icon + '</span><span class="inv-name">' + escapeHtml(def.name) + '</span>';
-    b.addEventListener('click', function () {
-      playSound('click');
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "inv-item" + (id === newItemId ? " new" : "");
+    b.innerHTML =
+      '<span class="inv-icon">' +
+      def.icon +
+      '</span><span class="inv-name">' +
+      escapeHtml(def.name) +
+      "</span>";
+    b.addEventListener("click", function () {
+      playSound("click");
       showInfo(def.name, def.desc, null, def.icon);
     });
     list.appendChild(b);
