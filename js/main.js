@@ -94,3 +94,50 @@ function resetLeaderboard(buttonId, onReset) {
     playSound('click');
   });
 }
+
+/* ---------- HOME ---------- */
+function initHome() {
+  var form = document.getElementById('start-form');
+  var input = document.getElementById('player-name');
+  var error = document.getElementById('name-error');
+  input.value = getLastName();
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = input.value.replace(/\s+/g, ' ').trim();
+    if (name.length < 2) {
+      error.textContent = 'Please enter a name with at least 2 characters.';
+      input.focus();
+      return;
+    }
+    error.textContent = '';
+    if (hasSavedGame() && !window.confirm('A game in progress is saved in this browser. Starting a new game will erase it. Continue?')) return;
+    playSound('click');
+    newGame(name);
+    window.location.href = 'instructions.html';
+  });
+
+  var cont = document.getElementById('continue-box');
+  if (hasSavedGame()) {
+    document.getElementById('continue-info').textContent =
+      gameState.playerName + ' — Score ' + gameState.score + ' — ' + formatTime(gameState.timeLeft) + ' left';
+    cont.hidden = false;
+  }
+
+  var best = getBestRecord();
+  var bestEl = document.getElementById('best-record');
+  if (best && bestEl) {
+    bestEl.hidden = false;
+    bestEl.innerHTML = '🏆 Best record: <strong>' + escapeHtml(best.name) + '</strong> — ' + best.score + ' pts — ' + formatTime(best.timeLeft) + ' left';
+  }
+
+  var resetHomeBtn = document.getElementById('reset-records-home');
+  if (resetHomeBtn) {
+    resetHomeBtn.hidden = !getRecords().length;
+    resetLeaderboard('reset-records-home', function () {
+      if (bestEl) { bestEl.hidden = true; bestEl.textContent = ''; }
+      resetHomeBtn.hidden = true;
+      showToast('Leaderboard cleared. Your active game is safe.');
+    });
+  }
+}
