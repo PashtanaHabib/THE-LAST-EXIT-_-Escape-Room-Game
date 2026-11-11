@@ -260,3 +260,16 @@ function getFinalGateCode() {
   }
   return ids.map(function (id) { return FINAL_GATE_FRAGMENTS[id]; }).join('');
 }
+
+/* ---------- Helpers ---------- */
+function getRoom(id) {
+  for (var i = 0; i < ROOMS.length; i++) { if (ROOMS[i].id === Number(id)) return ROOMS[i]; }
+  return null;
+}
+function getPuzzle(id) { return PUZZLES[id] || null; }
+function getItemDef(id) { return ITEMS[id] || null; }
+function getTotalPuzzles() { return Object.keys(PUZZLES).length; }
+
+function normalizeText(v) {
+  return String(v == null ? '' : v).toLowerCase().replace(/[^a-z0-9]/g, '');
+}
