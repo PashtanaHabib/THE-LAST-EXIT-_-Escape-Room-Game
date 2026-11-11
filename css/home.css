@@ -42,3 +42,12 @@
 .best-record { margin-top: 18px; color: var(--gold); font-size: .92rem; }
 .links { margin-top: 10px; }
 
+/* generic pages */
+.page { max-width: 960px; margin: 0 auto; padding: 22px 20px 50px; }
+.page.wide { max-width: 1180px; }
+.page-title { font-family: var(--font-title); font-size: clamp(1.8rem, 5vw, 2.8rem); letter-spacing: .08em; margin-bottom: .6em; }
+.info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 30px; }
+.info-grid .panel p { color: #bcc6d0; margin-bottom: 0; }
+.score-table { width: 100%; border-collapse: collapse; }
+.score-table td { padding: 5px 0; border-bottom: 1px solid #222d3a; }
+.score-table td:last-child { text-align: right; font-family: "Courier New", monospace; font-weight: 700; }
