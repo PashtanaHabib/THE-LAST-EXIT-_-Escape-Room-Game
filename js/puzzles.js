@@ -249,3 +249,14 @@ var ROOMS = [
     ]
   }
 ];
+
+/* Final gate digits are represented by the three inventory fragments. */
+var FINAL_GATE_FRAGMENTS = { frag1: '7', frag2: '3', frag3: '9' };
+
+function getFinalGateCode() {
+  var ids = ['frag1', 'frag2', 'frag3'];
+  for (var i = 0; i < ids.length; i++) {
+    if (!hasItem(ids[i])) return null;
+  }
+  return ids.map(function (id) { return FINAL_GATE_FRAGMENTS[id]; }).join('');
+}
