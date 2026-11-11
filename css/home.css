@@ -1,0 +1,44 @@
+/* home.css — Home, Instructions, Room Selection, Result pages */
+.bg-cinema {
+  position: fixed; inset: 0; z-index: -1;
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(8, 11, 16, .25), rgba(8, 11, 16, .92) 75%),
+    linear-gradient(180deg, rgba(8, 11, 16, .55), rgba(8, 11, 16, .9)),
+    url(../assets/images/final-room.jpg) center / cover no-repeat;
+  filter: saturate(.9);
+}
+.bg-cinema.dim {
+  background:
+    linear-gradient(180deg, rgba(8, 11, 16, .86), rgba(8, 11, 16, .96)),
+    url(../assets/images/library.jpg) center / cover no-repeat;
+}
+.topbar.simple { background: transparent; border-bottom: 0; backdrop-filter: none; position: relative; }
+
+/* ---------- home ---------- */
+.hero { max-width: 720px; margin: 0 auto; padding: 5vh 20px 40px; text-align: center; }
+.title {
+  font-family: var(--font-title); font-weight: 700;
+  font-size: clamp(2.6rem, 9vw, 5.2rem); letter-spacing: .14em; margin: .1em 0 .15em;
+  color: var(--text); text-shadow: 0 0 40px rgba(198, 93, 50, .55), 0 3px 0 #000;
+}
+.tagline { color: var(--gold); letter-spacing: .24em; text-transform: uppercase; font-size: .9rem; margin-bottom: 1.6em; }
+.story { max-width: 600px; margin: 0 auto 1.8em; color: #bcc6d0; font-size: 1.05rem; }
+.start-form { max-width: 520px; margin: 0 auto; text-align: left; }
+.start-form label { display: block; font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.start-form .row { display: flex; gap: 10px; }
+.start-form input {
+  flex: 1; min-width: 0; padding: 13px 16px; font-size: 1.05rem;
+  background: rgba(21, 27, 36, .9); color: var(--text);
+  border: 1px solid #34414f; border-radius: 8px;
+}
+.start-form input:focus { border-color: var(--gold); outline: none; box-shadow: 0 0 0 3px rgba(214, 180, 119, .18); }
+.form-error { color: var(--bad); min-height: 1.4em; margin: 6px 0 0; font-size: .88rem; }
+.continue-box {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  max-width: 520px; margin: 14px auto 0; padding: 12px 16px; text-align: left;
+  background: rgba(21, 27, 36, .85); border: 1px solid rgba(214, 180, 119, .4); border-radius: 10px;
+  font-size: .92rem;
+}
+.best-record { margin-top: 18px; color: var(--gold); font-size: .92rem; }
+.links { margin-top: 10px; }
+
