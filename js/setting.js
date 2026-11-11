@@ -92,3 +92,37 @@ function playGameTone(name) {
     osc.stop(start + note.d + .03);
   });
 }
+
+// A slow cinematic D-minor soundscape with a low drone and a repeating
+
+//    plucked-note motif. It is generated locally, so no external audio file
+//    or network connection is required.
+
+function playAdventureNote(frequency, when, duration, volume) {
+  if (!gameAudioContext || !ambientFilter) return;
+  var ctx = gameAudioContext;
+  var osc = ctx.createOscillator();
+  var gain = ctx.createGain();
+  var toneFilter = ctx.createBiquadFilter();
+
+  osc.type = 'triangle';
+  osc.frequency.setValueAtTime(frequency, when);
+  toneFilter.type = 'lowpass';
+  toneFilter.frequency.value = 1500;
+  gain.gain.setValueAtTime(.0001, when);
+  gain.gain.exponentialRampToValueAtTime(Math.max(.0002, volume), when + .035);
+  gain.gain.exponentialRampToValueAtTime(.0001, when + duration);
+  osc.connect(toneFilter);
+  toneFilter.connect(gain);
+  gain.connect(ambientFilter);
+  osc.start(when);
+  osc.stop(when + duration + .05);
+}
+
+var adventureTrackAudio = null;
+
+function startAmbientAudio() {
+  var settings = getGameSettings();
+  if (!settings.soundEnabled || settings.ambientVolume <= 0 || safeGet('thelastexit_muted') === '1') return;
+
+  
