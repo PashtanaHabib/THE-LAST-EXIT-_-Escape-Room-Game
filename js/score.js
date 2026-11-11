@@ -26,6 +26,7 @@ function addScore(points) {
 
 function getScore() {
     return gameState ? gameState.score : 0;
+
 }
 
 function updateScoreDisplay() {
@@ -45,5 +46,7 @@ function showScorePop(points) {
     document.body.appendChild(pop);
     setTimeout(function () { if (pop.parentNode) pop.parentNode.removeChild(pop); }, 1300);
 }
+
+
 
 
