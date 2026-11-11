@@ -1,0 +1,74 @@
+ /* style.css — shared base styles (all pages)
+
+   Dark cinematic theme */
+   :root {
+  --bg: #080B10;
+  --surface: #151B24;
+  --card: #263341;
+  --accent: #C65D32;
+  --gold: #D6B477;
+  --text: #DDE3E8;
+  --muted: #8d99a6;
+  --good: #4ec27f;
+  --bad: #e5584a;
+  --radius: 12px;
+  --font-title: Georgia, "Times New Roman", serif;
+  --font-body: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.55;
+}
+h1, h2, h3 { margin: 0 0 .5em; line-height: 1.15; }
+p { margin: 0 0 1em; }
+a { color: var(--gold); }
+img { max-width: 100%; display: block; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+.muted { color: var(--muted); }
+.small { font-size: .85rem; }
+.center { text-align: center; }
+.plus { color: var(--good); }
+.minus { color: var(--bad); }
+
+/* ---------- top bar & HUD ---------- */
+.topbar {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 10px 20px;
+  background: rgba(8, 11, 16, .86);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(214, 180, 119, .18);
+}
+.brand {
+  font-family: var(--font-title);
+  letter-spacing: .22em; font-weight: 700; font-size: .95rem;
+  color: var(--gold); text-decoration: none; text-transform: uppercase;
+}
+.hud { display: flex; align-items: stretch; gap: 8px; }
+.hud-box {
+  display: flex; flex-direction: column; justify-content: center;
+  min-width: 78px; padding: 4px 12px;
+  background: var(--surface); border: 1px solid #26313d; border-radius: 8px;
+  text-align: center;
+}
+.hud-k { font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.hud-v { font-family: "Courier New", monospace; font-weight: 700; font-size: 1.05rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 120px; }
+.hud-box.warn .hud-v { color: #f0a640; }
+.hud-box.danger { border-color: var(--bad); animation: pulse 1s infinite; }
+.hud-box.danger .hud-v { color: var(--bad); }
+@keyframes pulse { 50% { box-shadow: 0 0 14px rgba(229, 88, 74, .65); } }
+
+.icon-btn {
+  width: 40px; border: 1px solid #26313d; border-radius: 8px;
+  background: var(--surface); color: var(--text); font-size: 1.05rem; cursor: pointer;
+}
+.icon-btn:hover { border-color: var(--gold); }
