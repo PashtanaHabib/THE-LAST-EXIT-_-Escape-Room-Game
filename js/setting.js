@@ -125,4 +125,208 @@ function startAmbientAudio() {
   var settings = getGameSettings();
   if (!settings.soundEnabled || settings.ambientVolume <= 0 || safeGet('thelastexit_muted') === '1') return;
 
-  
+
+  // Use a real, bundled looping soundtrack instead of relying only on
+  // synthesized tones. It is retried on the user's first interaction
+  // because browsers may block autoplay before a gesture.
+  if (!adventureTrackAudio) {
+    adventureTrackAudio = new Audio('assets/sounds/adventure-theme.wav');
+    adventureTrackAudio.loop = true;
+    adventureTrackAudio.preload = 'auto';
+    adventureTrackAudio.setAttribute('aria-hidden', 'true');
+  }
+
+  adventureTrackAudio.volume = Math.max(0, Math.min(0.9, settings.ambientVolume / 100));
+  if (!adventureTrackAudio.paused) {
+    ambientMusicStarted = true;
+    return;
+  }
+
+  var playAttempt;
+  try {
+    playAttempt = adventureTrackAudio.play();
+  } catch (error) {
+    ambientMusicStarted = false;
+    return;
+  }
+
+  if (playAttempt && typeof playAttempt.then === 'function') {
+    playAttempt.then(function () {
+      ambientMusicStarted = true;
+    }).catch(function () {
+      ambientMusicStarted = false;
+    });
+  } else {
+    ambientMusicStarted = true;
+  }
+}
+
+function updateAmbientVolume() {
+  var settings = getGameSettings();
+  var shouldPlay = settings.soundEnabled &&
+    settings.ambientVolume > 0 &&
+    safeGet('thelastexit_muted') !== '1';
+
+  if (!adventureTrackAudio) {
+    if (shouldPlay && document.body.getAttribute('data-page') === 'game') startAmbientAudio();
+    return;
+  }
+
+  adventureTrackAudio.volume = shouldPlay
+    ? Math.max(0, Math.min(0.9, settings.ambientVolume / 100))
+    : 0;
+
+  if (shouldPlay && adventureTrackAudio.paused && document.body.getAttribute('data-page') === 'game') {
+    startAmbientAudio();
+  } else if (!shouldPlay && !adventureTrackAudio.paused) {
+    adventureTrackAudio.pause();
+  }
+}
+
+function stopAmbientAudio() {
+  if (adventureTrackAudio) {
+    adventureTrackAudio.pause();
+    adventureTrackAudio.currentTime = 0;
+  }
+  ambientMusicStarted = false;
+}
+
+function transitionLabel(href) {
+  var url;
+  try { url = new URL(href, window.location.href); } catch (e) { return ['THE LAST EXIT', 'One moment...']; }
+  var roomId = Number(url.searchParams.get('room'));
+  if (url.pathname.endsWith('/game.html') && roomId && typeof ROOMS !== 'undefined') {
+    var room = ROOMS.filter(function (r) { return r.id === roomId; })[0];
+    if (room) return ['ENTERING ROOM 0' + room.id, room.title];
+  }
+  if (url.pathname.endsWith('/levels.html')) return ['ROOM SELECTION', 'Choose your next destination'];
+  if (url.pathname.endsWith('/result.html')) return ['THE FINAL MOMENT', 'Your fate is being decided'];
+  if (url.pathname.endsWith('/instructions.html')) return ['THE BRIEFING', 'Read the rules before you enter'];
+  if (url.pathname.endsWith('/settings.html')) return ['GAME SETTINGS', 'Make the experience yours'];
+  return ['THE LAST EXIT', 'Prepare yourself'];
+}
+
+function showPageTransition(href) {
+  var settings = getGameSettings();
+  if (!settings.transitions || settings.motion === 'off') {
+    window.location.href = href;
+    return;
+  }
+  var overlay = document.getElementById('page-transition');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'page-transition';
+    overlay.className = 'page-transition';
+    overlay.innerHTML = '<div class="transition-content"><span class="transition-mark">THE LAST EXIT</span><h2 id="transition-title"></h2><p id="transition-subtitle"></p><span class="transition-line"></span></div>';
+    document.body.appendChild(overlay);
+  }
+  var label = transitionLabel(href);
+  document.getElementById('transition-title').textContent = label[0];
+  document.getElementById('transition-subtitle').textContent = label[1];
+  playGameTone('transition');
+  requestAnimationFrame(function () { overlay.classList.add('visible'); });
+  window.setTimeout(function () { window.location.href = href; }, settings.motion === 'reduced' ? 220 : 520);
+}
+
+function initPageTransitions() {
+  document.addEventListener('click', function (event) {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    var link = event.target.closest ? event.target.closest('a[href]') : null;
+    if (!link || link.target === '_blank' || link.hasAttribute('download') || link.getAttribute('href').charAt(0) === '#') return;
+    var rawHref = link.getAttribute('href');
+    if (!rawHref || /^(mailto:|tel:|javascript:)/i.test(rawHref)) return;
+    var url;
+    try { url = new URL(rawHref, window.location.href); } catch (e) { return; }
+    if (url.origin !== window.location.origin || !/\.html$/i.test(url.pathname)) return;
+    if (url.href === window.location.href) return;
+    event.preventDefault();
+    if (url.pathname.endsWith('/settings.html')) {
+      try { window.sessionStorage.setItem('thelastexit_settings_return', window.location.href); } catch (e) {}
+    }
+    showPageTransition(url.href);
+  });
+}
+
+function initSettingsPage() {
+  var settings = getGameSettings();
+  var sound = document.getElementById('setting-sound-enabled');
+  var effects = document.getElementById('setting-effects-volume');
+  var ambient = document.getElementById('setting-ambient-volume');
+  var transitions = document.getElementById('setting-transitions');
+  var shake = document.getElementById('setting-shake');
+  var motion = document.getElementById('setting-motion');
+  if (!sound) return;
+
+  function render() {
+    var s = getGameSettings();
+    sound.checked = s.soundEnabled && safeGet('thelastexit_muted') !== '1';
+    effects.value = s.effectsVolume;
+    ambient.value = s.ambientVolume;
+    transitions.checked = s.transitions;
+    shake.checked = s.screenShake;
+    motion.value = s.motion;
+    document.getElementById('effects-volume-value').textContent = s.effectsVolume + '%';
+    document.getElementById('ambient-volume-value').textContent = s.ambientVolume + '%';
+  }
+  function changed(key, value) {
+    updateGameSetting(key, value);
+    document.getElementById('settings-feedback').textContent = '✓ Settings saved automatically.';
+    playGameTone('clue');
+  }
+
+  sound.addEventListener('change', function () {
+    safeSet('thelastexit_muted', sound.checked ? '0' : '1');
+    changed('soundEnabled', sound.checked);
+  });
+  effects.addEventListener('input', function () {
+    document.getElementById('effects-volume-value').textContent = effects.value + '%';
+    changed('effectsVolume', Number(effects.value));
+  });
+  ambient.addEventListener('input', function () {
+    document.getElementById('ambient-volume-value').textContent = ambient.value + '%';
+    changed('ambientVolume', Number(ambient.value));
+  });
+  transitions.addEventListener('change', function () { changed('transitions', transitions.checked); });
+  shake.addEventListener('change', function () { changed('screenShake', shake.checked); });
+  motion.addEventListener('change', function () { changed('motion', motion.value); });
+
+  var closeButton = document.getElementById('close-settings');
+  if (closeButton) {
+    closeButton.addEventListener('click', function () {
+      var returnUrl = null;
+      try {
+        returnUrl = window.sessionStorage.getItem('thelastexit_settings_return');
+        window.sessionStorage.removeItem('thelastexit_settings_return');
+      } catch (e) {}
+      if (returnUrl) {
+        try {
+          var parsedReturn = new URL(returnUrl, window.location.href);
+          if (parsedReturn.origin === window.location.origin) {
+            window.location.href = parsedReturn.href;
+            return;
+          }
+        } catch (e) {}
+      }
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = 'index.html';
+      }
+    });
+  }
+
+  document.getElementById('reset-settings').addEventListener('click', function () {
+    saveGameSettings(Object.assign({}, DEFAULT_GAME_SETTINGS));
+    render();
+    document.getElementById('settings-feedback').textContent = 'Default settings restored.';
+    playGameTone('unlock');
+  });
+  render();
+  applyMotionSettings();
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  applyMotionSettings();
+  initPageTransitions();
+  if (document.body.getAttribute('data-page') === 'settings') initSettingsPage();
+});
