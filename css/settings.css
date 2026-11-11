@@ -7,7 +7,11 @@
 .settings-section { display: flex; flex-direction: column; gap: 18px; }
 .settings-heading { display: flex; align-items: center; gap: 14px; margin-bottom: 2px; }
 .settings-icon {
-  width: 48px; height: 48px; flex: 0 0 48px; display: grid; place-items: center;
+  width: 48px;
+   height: 48px; 
+   flex: 0 0 48px;
+    display: grid; 
+    place-items: center;
   border-radius: 14px; background: rgba(214,180,119,.11); border: 1px solid rgba(214,180,119,.25);
   font-size: 1.35rem;
 }
