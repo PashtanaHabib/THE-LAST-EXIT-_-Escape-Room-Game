@@ -153,3 +153,45 @@ function initInstructions() {
     go.setAttribute('href', 'index.html');
   }
 }
+
+/* ---------- LEVEL SELECTION ---------- */
+function initLevels() {
+  if (!requireGame('playing')) return;
+  fillHud();
+  var grid = document.getElementById('level-grid');
+  grid.innerHTML = '';
+
+  ROOMS.forEach(function (room) {
+    var unlocked = isRoomUnlocked(room.id), done = isRoomCompleted(room.id);
+    var solved = countSolved(room);
+    var status = done ? 'Completed' : (unlocked ? 'Unlocked' : 'Locked');
+    var card = document.createElement('article');
+    card.className = 'level-card ' + (done ? 'completed' : unlocked ? 'unlocked' : 'locked');
+    card.innerHTML =
+      '<div class="level-thumb" style="background-image:url(' + room.image + ')">' +
+        '<span class="level-num">0' + room.id + '</span>' +
+        (unlocked ? '' : '<span class="level-lock">🔒</span>') +
+      '</div>' +
+      '<div class="level-body">' +
+        '<div class="level-top"><span class="badge diff-' + room.difficulty.toLowerCase() + '">' + room.difficulty + '</span>' +
+        '<span class="status status-' + status.toLowerCase() + '">' + status + '</span></div>' +
+        '<h3>' + escapeHtml(room.title) + '</h3>' +
+        '<p>' + escapeHtml(room.summary) + '</p>' +
+        '<div class="mini-progress"><div style="width:' + (solved / room.puzzles.length * 100) + '%"></div></div>' +
+        '<div class="mini-label">Puzzles: ' + solved + ' / ' + room.puzzles.length + '</div>' +
+        (unlocked
+          ? '<a class="btn btn-primary" href="game.html?room=' + room.id + '">' + (done ? 'Review Room' : (solved ? 'Continue' : 'Enter Room')) + '</a>'
+          : '<button class="btn btn-disabled" type="button" disabled>Complete Room 0' + (room.id - 1) + ' first</button>') +
+      '</div>';
+    grid.appendChild(card);
+  });
+
+  var total = gameState.solvedPuzzles.length, all = getTotalPuzzles();
+  document.getElementById('overall-label').textContent = total + ' / ' + all + ' puzzles solved';
+  document.getElementById('overall-bar').style.width = (total / all * 100) + '%';
+
+  var quit = document.getElementById('quit-btn');
+  if (quit) quit.addEventListener('click', function () { playSound('click'); });
+
+  startTimer(null, function () { finishGame(false); });
+}
