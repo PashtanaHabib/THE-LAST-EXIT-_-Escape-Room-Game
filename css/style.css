@@ -182,3 +182,54 @@ img { max-width: 100%; display: block; }
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
+
+/* cinematic room/page effects */
+.settings-shortcut {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  line-height: 1;
+}
+.page-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background:
+    radial-gradient(ellipse at center, rgba(48, 42, 32, .42), transparent 58%),
+    rgba(4, 6, 9, .97);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .42s ease;
+}
+.page-transition.visible { opacity: 1; }
+.transition-content { text-align: center; max-width: 620px; transform: translateY(14px); transition: transform .5s ease; }
+.page-transition.visible .transition-content { transform: translateY(0); }
+.transition-mark { color: var(--gold); font: 700 .72rem var(--font-body); letter-spacing: .38em; }
+.transition-content h2 { margin: 18px 0 8px; color: #f0e2c6; font: 700 clamp(1.5rem, 5vw, 2.8rem) var(--font-title); letter-spacing: .1em; }
+.transition-content p { color: var(--muted); letter-spacing: .08em; }
+.transition-line { display: block; width: 0; height: 2px; margin: 26px auto 0; background: linear-gradient(90deg, transparent, var(--gold), transparent); transition: width .55s ease .08s; }
+.page-transition.visible .transition-line { width: min(260px, 70vw); }
+.screen-shake { animation: full-screen-shake .38s ease; }
+@keyframes full-screen-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-5px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(2px); }
+}
+[data-motion="reduced"] .page-transition { transition-duration: .2s; }
+[data-motion="reduced"] .transition-content,
+[data-motion="reduced"] .transition-line { transition-duration: .2s; }
+[data-motion="reduced"] .hs-mark { animation-duration: 3s; }
+[data-motion="off"] *,
+[data-motion="off"] *::before,
+[data-motion="off"] *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
