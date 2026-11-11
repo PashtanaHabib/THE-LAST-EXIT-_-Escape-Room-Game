@@ -273,3 +273,28 @@ function getTotalPuzzles() { return Object.keys(PUZZLES).length; }
 function normalizeText(v) {
   return String(v == null ? '' : v).toLowerCase().replace(/[^a-z0-9]/g, '');
 }
+
+/* value: string (text) | id (choice) | array (sequence) | string "0101" (toggles) */
+function checkAnswer(puzzleId, value) {
+  var p = getPuzzle(puzzleId);
+  if (!p) return false;
+  if (p.type === 'text') {
+    var v = normalizeText(value);
+    if (!v) return false;
+
+    // The final gate only accepts the code when all three fragments are owned.
+    if (p.id === 'p12') {
+      var finalCode = getFinalGateCode();
+      return finalCode !== null && v === normalizeText(finalCode);
+    }
+
+    for (var i = 0; i < p.answers.length; i++) {
+      if (normalizeText(p.answers[i]) === v) return true;
+    }
+    return false;
+  }
+  if (p.type === 'choice') return value === p.answer;
+  if (p.type === 'sequence') return Array.isArray(value) && value.join(',') === p.answer.join(',');
+  if (p.type === 'toggles') return String(value) === p.answer;
+  return false;
+}
