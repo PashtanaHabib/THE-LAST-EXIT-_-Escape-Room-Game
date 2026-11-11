@@ -172,3 +172,80 @@ var PUZZLES = {
     reward: []
   }
 };
+
+
+/* ---------- Rooms and their clickable objects ----------
+   action types:
+     clue   -> shows text, optionally gives an inventory item
+     puzzle -> opens a puzzle modal (needs `requires` puzzle solved)
+     door   -> completes the room when every puzzle is solved        */
+var ROOMS = [
+  {
+    id: 1, key: 'office', title: 'THE OFFICE', difficulty: 'Easy',
+    image: 'assets/images/office.jpg',
+    summary: 'You wake up in an old office. The door is locked.',
+    intro: 'You wake up on a cold floor in a dusty office. A desk lamp flickers. Somewhere, a clock starts to count down. The door is locked — and the owner of this place left you a trail of clues...',
+    objective: 'Find the computer password, open the drawer and get the key.',
+    puzzles: ['p1', 'p2', 'p3'],
+    objects: [
+      { id: 'door',     name: 'Exit Door', art: 'door',     box: [82, 14, 13, 60], action: { type: 'door', lockedMsg: 'The door is locked. Find the key hidden in this office.' } },
+      { id: 'calendar', name: 'Wall Calendar', art: 'calendar', box: [64, 12, 9, 22], action: { type: 'clue', title: 'Wall Calendar', text: ITEMS.calendar.desc, item: 'calendar' } },
+      { id: 'computer', name: 'Computer', art: 'computer', box: [32, 28, 19, 30], action: { type: 'puzzle', puzzle: 'p1', afterSolved: { title: 'Email', text: ITEMS.email.desc } } },
+      { id: 'sticky',   name: 'Sticky Note', art: 'sticky', box: [27, 40, 4.5, 8], action: { type: 'clue', title: 'Sticky Note', text: ITEMS.sticky.desc, item: 'sticky' } },
+      { id: 'photo',    name: 'Photo Frame', art: 'photo',  box: [55, 40, 7, 15], action: { type: 'clue', title: 'Photo Frame', text: ITEMS.photo.desc, item: 'photo' } },
+      { id: 'lockbox',  name: 'Lockbox', art: 'lockbox',    box: [66, 49, 9, 9], action: { type: 'puzzle', puzzle: 'p3', requires: 'p2', lockedMsg: 'A small steel lockbox. It needs a clue first... maybe the drawer holds something.', afterSolved: { title: 'Lockbox', text: 'The lockbox is empty now. You already have the key.' } } },
+      { id: 'drawer',   name: 'Desk Drawer', art: 'drawer', box: [22, 63, 17, 13], action: { type: 'puzzle', puzzle: 'p2', requires: 'p1', lockedMsg: 'The drawer needs a 4-digit code. Maybe the computer knows it.', afterSolved: { title: 'Desk Drawer', text: 'The drawer is open. You already took the riddle note.' } } }
+    ]
+  },
+  {
+    id: 2, key: 'library', title: 'THE LIBRARY', difficulty: 'Medium',
+    image: 'assets/images/library.jpg',
+    summary: 'A hidden message waits between the shelves.',
+    intro: 'Thousands of books. Silence. Dr. Voss hid a message here — a word that will matter much later. Find the right book, arrange the symbols and decode the secret.',
+    objective: 'Find the book, arrange the symbols and decode the secret word.',
+    puzzles: ['p4', 'p5', 'p6'],
+    objects: [
+      { id: 'door',     name: 'Exit Door', art: 'door', box: [3, 14, 10, 50], action: { type: 'door', lockedMsg: 'The library door will not open yet. Decode the secret first.' } },
+      { id: 'plaque',   name: 'Brass Plaque', art: 'plaque', box: [15, 22, 8, 8], action: { type: 'clue', title: 'Brass Plaque', text: ITEMS.plaque.desc, item: 'plaque' } },
+      { id: 'globe',    name: 'Old Globe', art: 'globe', box: [15, 50, 11, 22], action: { type: 'clue', title: 'Old Globe', text: ITEMS.globenote.desc, item: 'globenote' } },
+      { id: 'bookshelf',name: 'Bookshelf', art: 'bookshelf', box: [29, 8, 32, 42], action: { type: 'puzzle', puzzle: 'p4', afterSolved: { title: 'Bookshelf', text: 'You already took the loose page from "The Glass Garden".' } } },
+      { id: 'tablet',   name: 'Stone Tablet', art: 'tablet', box: [32, 53, 16, 9], action: { type: 'puzzle', puzzle: 'p5', requires: 'p4', lockedMsg: 'Four stone symbols. You do not know their order yet. The shelf may help.', afterSolved: { title: 'Stone Tablet', text: 'The tablet is open. The encrypted note is in your inventory.' } } },
+      { id: 'painting', name: 'Night Painting', art: 'painting', box: [64, 6, 14, 28], action: { type: 'clue', title: 'Night Painting', text: ITEMS.paintnote.desc, item: 'paintnote' } },
+      { id: 'lamp',     name: 'Reading Lamp', art: 'lamp', box: [66, 38, 8, 24], action: { type: 'clue', title: 'Reading Lamp', text: ITEMS.lampnote.desc, item: 'lampnote' } },
+      { id: 'safe',     name: 'Wall Safe', art: 'safe', box: [82, 20, 12, 26], action: { type: 'puzzle', puzzle: 'p6', requires: 'p5', lockedMsg: 'A wall safe with a scrambled word. You need something to decode it.', afterSolved: { title: 'Wall Safe', text: 'The safe is empty now. You already took the secret word and the page.' } } }
+    ]
+  },
+  {
+    id: 3, key: 'laboratory', title: 'THE LABORATORY', difficulty: 'Hard',
+    image: 'assets/images/laboratory.jpg',
+    summary: 'The lab is sealed. Activate its machine.',
+    intro: 'The lab smells of metal and chemicals. Everything is sealed until the central machine is running. Numbers, colors and switches — one mistake and you lose precious points.',
+    objective: 'Solve the sequence, set the reactor colors and activate the machine.',
+    puzzles: ['p7', 'p8', 'p9'],
+    objects: [
+      { id: 'door',      name: 'Exit Door', art: 'door', box: [3, 14, 10, 50], action: { type: 'door', lockedMsg: 'Sealed. The machine must be activated to open the lab door.' } },
+      { id: 'chalkboard',name: 'Chalkboard', art: 'chalkboard', box: [16, 10, 24, 30], action: { type: 'puzzle', puzzle: 'p7', afterSolved: { title: 'Chalkboard', text: 'The pattern was n × (n+1). The next number was 42.' } } },
+      { id: 'labmonitor',name: 'Reactor Monitor', art: 'labmonitor', box: [44, 10, 12, 16], action: { type: 'clue', title: 'Reactor Monitor', text: ITEMS.chalknote.desc, item: 'chalknote' } },
+      { id: 'poster',    name: 'Safety Poster', art: 'poster', box: [60, 10, 10, 18], action: { type: 'clue', title: 'Safety Poster', text: ITEMS.postnote.desc, item: 'postnote' } },
+      { id: 'flasks',    name: 'Flask Rack', art: 'flasks', box: [74, 10, 12, 24], action: { type: 'clue', title: 'Flask Rack', text: ITEMS.flasknote.desc, item: 'flasknote' } },
+      { id: 'console',   name: 'Color Console', art: 'console', box: [30, 50, 20, 16], action: { type: 'puzzle', puzzle: 'p8', requires: 'p7', lockedMsg: 'The console is dead. It needs power — the chalkboard might hold the code.', afterSolved: { title: 'Color Console', text: 'The reactor is stable. Its sequence is saved in your inventory.' } } },
+      { id: 'machine',   name: 'Central Machine', art: 'machine', box: [60, 40, 24, 34], action: { type: 'puzzle', puzzle: 'p9', requires: 'p8', lockedMsg: 'The machine has no power. Stabilize the reactor first.', afterSolved: { title: 'Central Machine', text: 'The machine is running. The lab door can now be opened.' } } }
+    ]
+  },
+  {
+    id: 4, key: 'final', title: 'THE LAST EXIT', difficulty: 'Expert',
+    image: 'assets/images/final-room.jpg',
+    summary: 'The final gate opens only with what you learned.',
+    intro: 'A vast concrete hall. At its end: a huge steel gate — the last exit. Everything you found in the other rooms will be needed now. There is no second chance.',
+    objective: 'Use your inventory: unlock the terminal, switch the breakers and open the gate.',
+    puzzles: ['p10', 'p11', 'p12'],
+    objects: [
+      { id: 'wallposter', name: 'Torn Poster', art: 'wallposter', box: [10, 12, 12, 14], action: { type: 'clue', title: 'Torn Poster', text: ITEMS.wallposter.desc, item: 'wallposter' } },
+      { id: 'terminal',   name: 'Terminal', art: 'terminal', box: [10, 36, 16, 22], action: { type: 'puzzle', puzzle: 'p10', afterSolved: { title: 'Terminal', text: 'ACCESS GRANTED. The terminal is unlocked.' } } },
+      { id: 'wallnote',   name: 'Scratched Note', art: 'wallnote', box: [28, 26, 7, 9], action: { type: 'clue', title: 'Scratched Note', text: ITEMS.wallnote.desc, item: 'wallnote' } },
+      { id: 'gate',       name: 'Exit Gate', art: 'gate', box: [38, 10, 24, 62], action: { type: 'puzzle', puzzle: 'p12', requires: 'p11', lockedMsg: 'The gate has no power. The breaker panel must be switched on first.' } },
+      { id: 'warnsign',   name: 'Warning Sign', art: 'warnsign', box: [66, 12, 8, 8], action: { type: 'clue', title: 'Warning Sign', text: ITEMS.warnsign.desc, item: 'warnsign' } },
+      { id: 'breaker',    name: 'Breaker Panel', art: 'breaker', box: [72, 30, 18, 32], action: { type: 'puzzle', puzzle: 'p11', requires: 'p10', lockedMsg: 'The breaker panel is locked by the terminal.', afterSolved: { title: 'Breaker Panel', text: 'All breakers are on. The gate has power.' } } }
+    ]
+  }
+];
