@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>THE LAST EXIT — Escape Room Game</title>
+    <meta name="description"
+        content="THE LAST EXIT — a browser escape-room puzzle game. Four rooms. One escape. No second chance.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body data-page="home">
+    <div class="bg-cinema" aria-hidden="true"></div>
+    <header class="topbar simple">
+        <span class="brand">THE LAST EXIT</span>
+        <a class="icon-btn settings-shortcut" href="settings.html" aria-label="Game settings" title="Settings">⚙️</a>
+        <button type="button" id="sound-toggle" class="icon-btn" aria-label="Sound">🔊</button>
+    </header>
+
+    <main class="hero">
+        <p class="kicker">A browser escape-room game</p>
+        <h1 class="title">THE LAST EXIT</h1>
+        <p class="tagline">Four Rooms. One Escape. No Second Chance.</p>
+        <p class="story">You wake up in a stranger's office. The door is locked. A clock on the wall starts to count
+            down: <strong>twenty minutes</strong>. Dr. Voss left clues in every room — and everything you find will
+            matter in the very last one.</p>
+
+        <form id="start-form" class="start-form" novalidate>
+            <label for="player-name">Your name</label>
+            <div class="row">
+                <input id="player-name" type="text" maxlength="16" autocomplete="nickname" placeholder="Enter your name"
+                    required>
+                <button type="submit" class="btn btn-primary btn-big">Start Game</button>
+            </div>
+            <p id="name-error" class="form-error" role="alert"></p>
+        </form>
+
+        <div id="continue-box" class="continue-box" hidden>
+            <span id="continue-info"></span>
+            <a class="btn btn-gold" href="levels.html">Continue Game</a>
+        </div>
+
+        <p id="best-record" class="best-record" hidden></p>
+        <button type="button" id="reset-records-home" class="btn btn-reset-records" hidden>Reset Leaderboard</button>
+        <p class="links"><a href="instructions.html">How to play</a></p>
+    </main>
+
+    <footer class="footer">THE LAST EXIT · HTML · CSS · JavaScript · no backend</footer>
+    <script src="js/storage.js"></script>
+    <script src="js/score.js"></script>
+    <script src="js/timer.js"></script>
+    <script src="js/inventory.js"></script>
+    <script src="js/puzzles.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
