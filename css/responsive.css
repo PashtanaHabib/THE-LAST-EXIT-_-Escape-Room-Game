@@ -1,0 +1,156 @@
+/* responsive.css — tablet & mobile adjustments */
+@media (max-width: 1000px) {
+    .game-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .side {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .side .panel {
+        flex: 1 1 280px;
+    }
+
+    .inv-list {
+        max-height: 240px;
+    }
+}
+
+@media (max-width: 640px) {
+    .topbar {
+        padding: 8px 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .hud {
+        gap: 5px;
+    }
+
+    .hud-box {
+        min-width: 0;
+        padding: 3px 8px;
+    }
+
+    .hud-v {
+        font-size: .9rem;
+        max-width: 80px;
+    }
+
+    .hud-k {
+        font-size: .55rem;
+    }
+
+    .brand {
+        font-size: .8rem;
+        letter-spacing: .16em;
+    }
+
+    .icon-btn {
+        width: 34px;
+    }
+
+    .hero {
+        padding-top: 3vh;
+    }
+
+    .start-form .row {
+        flex-direction: column;
+    }
+
+    .story {
+        font-size: .98rem;
+    }
+
+    .game-layout {
+        padding: 10px 10px 24px;
+        gap: 12px;
+    }
+
+    .room-bar {
+        gap: 8px;
+    }
+
+    .room-title {
+        font-size: 1rem;
+    }
+
+    .room-prog {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .hs-label {
+        font-size: .65rem;
+        padding: 2px 6px;
+    }
+
+    .hs-mark {
+        width: 10px;
+        height: 10px;
+        top: -4px;
+        right: -4px;
+    }
+
+    .objective {
+        font-size: .88rem;
+    }
+
+    .modal-box {
+        padding: 20px 16px 16px;
+    }
+
+    .modal-head h2 {
+        font-size: 1.15rem;
+    }
+
+    .modal-head.intro h2 {
+        font-size: 1.5rem;
+    }
+
+    .slot {
+        width: 46px;
+        height: 46px;
+        font-size: 1.5rem;
+    }
+
+    .pz-opt {
+        width: 54px;
+        height: 54px;
+        font-size: 1.6rem;
+    }
+
+    .pz-names span {
+        width: 54px;
+        font-size: .62rem;
+    }
+
+    .pz-switches {
+        gap: 6px;
+    }
+
+    .pz-switch {
+        width: 62px;
+    }
+
+    .pz-input {
+        font-size: 1.1rem;
+        letter-spacing: .15em;
+    }
+
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .level-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .toasts {
+        left: 10px;
+        right: 10px;
+        align-items: stretch;
+    }
+}
