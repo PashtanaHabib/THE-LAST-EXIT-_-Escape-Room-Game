@@ -290,30 +290,55 @@ function initSettingsPage() {
   shake.addEventListener('change', function () { changed('screenShake', shake.checked); });
   motion.addEventListener('change', function () { changed('motion', motion.value); });
 
+  
+  // Close Settings Button
   var closeButton = document.getElementById('close-settings');
+
   if (closeButton) {
     closeButton.addEventListener('click', function () {
+
       var returnUrl = null;
+
+      // First: Check saved return URL
       try {
-        returnUrl = window.sessionStorage.getItem('thelastexit_settings_return');
-        window.sessionStorage.removeItem('thelastexit_settings_return');
+        returnUrl = window.sessionStorage.getItem(
+          'thelastexit_settings_return'
+        );
+
+        window.sessionStorage.removeItem(
+          'thelastexit_settings_return'
+        );
       } catch (e) {}
+
+      // Second: Check the previous page
+      if (!returnUrl && document.referrer) {
+        returnUrl = document.referrer;
+      }
+
+      // Validate the destination
       if (returnUrl) {
         try {
-          var parsedReturn = new URL(returnUrl, window.location.href);
-          if (parsedReturn.origin === window.location.origin) {
+          var parsedReturn = new URL(
+            returnUrl,
+            window.location.href
+          );
+
+          if (
+            parsedReturn.origin === window.location.origin &&
+            !parsedReturn.pathname.endsWith('/settings.html')
+          ) {
             window.location.href = parsedReturn.href;
             return;
           }
         } catch (e) {}
       }
-      if (window.history.length > 1) {
-        window.history.back();
-      } else {
-        window.location.href = 'index.html';
-      }
+
+      // Final fallback
+      window.location.href = 'index.html';
+
     });
   }
+
 
   document.getElementById('reset-settings').addEventListener('click', function () {
     saveGameSettings(Object.assign({}, DEFAULT_GAME_SETTINGS));
