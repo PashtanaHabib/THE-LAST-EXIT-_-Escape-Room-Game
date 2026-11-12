@@ -1,0 +1,46 @@
+/* settings.css — THE LAST EXIT settings screen
+ */
+
+ .settings-page { max-width: 820px; }
+.settings-intro { max-width: 620px; color: var(--muted); margin-bottom: 24px; }
+.settings-panel { padding: 26px clamp(18px, 4vw, 34px); }
+.settings-section { display: flex; flex-direction: column; gap: 18px; }
+.settings-heading { display: flex; align-items: center; gap: 14px; margin-bottom: 2px; }
+.settings-icon {
+  width: 48px;
+   height: 48px; 
+   flex: 0 0 48px;
+    display: grid; 
+    place-items: center;
+  border-radius: 14px; background: rgba(214,180,119,.11); border: 1px solid rgba(214,180,119,.25);
+  font-size: 1.35rem;
+}
+.settings-heading h2 { margin: 0 0 4px; color: var(--gold); font: 700 1.25rem var(--font-title); }
+.settings-heading p { margin: 0; color: var(--muted); font-size: .88rem; }
+.setting-row, .setting-range, .setting-select {
+  display: flex; align-items: center; justify-content: space-between; gap: 18px;
+  padding: 14px 0; border-bottom: 1px solid rgba(141,153,166,.13);
+}
+.setting-row span, .setting-range span, .setting-select span { display: flex; flex-direction: column; gap: 3px; }
+.setting-row strong, .setting-range strong, .setting-select strong { color: var(--text); font-size: .95rem; }
+.setting-row small, .setting-range small, .setting-select small { color: var(--muted); font-size: .8rem; }
+.setting-range { display: grid; grid-template-columns: 1fr auto; }
+.setting-range input { grid-column: 1 / -1; width: 100%; accent-color: var(--gold); cursor: pointer; }
+.setting-range output { color: var(--gold); font: 700 .9rem "Courier New", monospace; }
+.setting-row input[type="checkbox"] {
+  width: 20px; height: 20px; accent-color: var(--gold); flex: 0 0 auto; cursor: pointer;
+}
+.setting-select select {
+  min-width: 180px; padding: 10px 12px; color: var(--text); background: #0b1016;
+  border: 1px solid #38465a; border-radius: 8px; font: inherit;
+}
+.settings-divider { height: 1px; margin: 24px 0; background: rgba(214,180,119,.2); }
+.settings-feedback { min-height: 1.5em; margin: 20px 0 12px; color: var(--good); font-size: .88rem; }
+.settings-actions { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.settings-footnote { margin-top: 18px; color: var(--muted); font-size: .8rem; }
+@media (max-width: 560px) {
+  .settings-panel { padding: 20px 16px; }
+  .setting-select { align-items: flex-start; flex-direction: column; }
+  .setting-select select { width: 100%; }
+  .settings-actions .btn { flex: 1 1 100%; }
+}
