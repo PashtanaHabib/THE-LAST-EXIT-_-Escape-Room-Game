@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- 1. Document Metadata and Page Configuration -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Room Selection — THE LAST EXIT</title>
+    <meta
+      name="description"
+      content="THE LAST EXIT — a browser escape-room puzzle game. Four rooms. One escape. No second chance."
+    />
+    <!-- 2. External Stylesheets -->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/home.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+  </head>
+  <body data-page="levels">
+    <!-- 3. Background Overlay -->
+    <div class="bg-cinema dim" aria-hidden="true"></div>
+    <!-- 4. Header and Player Information -->
+    <header class="topbar">
+      <a class="brand" href="index.html">THE LAST EXIT</a>
+      <div class="hud">
+        <div class="hud-box">
+          <span class="hud-k">Player</span
+          ><span class="hud-v" id="hud-player">—</span>
+        </div>
+        <div class="hud-box">
+          <span class="hud-k">Score</span
+          ><span class="hud-v" id="hud-score">0</span>
+        </div>
+        <div class="hud-box">
+          <span class="hud-k">Time</span
+          ><span class="hud-v" id="hud-time">20:00</span>
+        </div>
+        <a
+          class="icon-btn settings-shortcut"
+          href="settings.html"
+          aria-label="Game settings"
+          title="Settings"
+          >⚙️</a
+        >
+        <button
+          type="button"
+          id="sound-toggle"
+          class="icon-btn"
+          aria-label="Sound"
+        >
+          🔊
+        </button>
+      </div>
+    </header>
+    <!-- 5. Main Room Selection Content -->
+    <main class="page wide">
+      <p class="kicker">Room Selection</p>
+      <h1 class="page-title">Choose a Room</h1>
+      <!-- 6. Overall Game Progress -->
+      <div class="overall">
+        <div class="overall-top">
+          <span>Overall progress</span
+          ><span id="overall-label">0 / 12 puzzles solved</span>
+        </div>
+        <div class="bar"><div id="overall-bar"></div></div>
+      </div>
+      <!-- 7. Dynamic Room Cards Container -->
+      <div id="level-grid" class="level-grid"></div>
+      <!-- 8. Countdown Information -->
+      <p class="muted small center">
+        ⏱ The countdown keeps running while you are in this screen.
+      </p>
+      <!-- 9. Home Navigation -->
+      <p class="center">
+        <a id="quit-btn" class="link-quiet" href="index.html"
+          >Leave to Home (progress is saved)</a
+        >
+      </p>
+    </main>
+    <!-- 10. JavaScript Files and Game Functionality -->
+    <script src="js/storage.js"></script>
+    <script src="js/score.js"></script>
+    <script src="js/timer.js"></script>
+    <script src="js/inventory.js"></script>
+    <script src="js/puzzles.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

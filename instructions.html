@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- 1. Document Metadata and Page Configuration -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>How to Play — THE LAST EXIT</title>
+    <meta
+      name="description"
+      content="THE LAST EXIT — a browser escape-room puzzle game. Four rooms. One escape. No second chance."
+    />
+    <!-- 2. External Stylesheets -->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/home.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+  </head>
+  <body data-page="instructions">
+    <!-- 3. Background Overlay -->
+    <div class="bg-cinema dim" aria-hidden="true"></div>
+    <!-- 4. Header and Navigation -->
+    <header class="topbar simple">
+      <a class="brand" href="index.html">THE LAST EXIT</a>
+      <a
+        class="icon-btn settings-shortcut"
+        href="settings.html"
+        aria-label="Game settings"
+        title="Settings"
+        >⚙️</a
+      >
+      <button
+        type="button"
+        id="sound-toggle"
+        class="icon-btn"
+        aria-label="Sound"
+      >
+        🔊
+      </button>
+    </header>
+    <!-- 5. Main Briefing Section -->
+    <main class="page">
+      <p class="kicker">Briefing</p>
+      <h1 class="page-title">How to Play</h1>
+      <div class="info-grid">
+        <!-- 6. Game Goal and Investigation -->
+        <section class="panel">
+          <h2>🎯 Goal</h2>
+          <p>
+            Escape through <strong>4 rooms</strong> by solving
+            <strong>12 puzzles</strong> (3 per room) before the
+            <strong>20-minute</strong> timer reaches zero. Information from
+            earlier rooms is needed in the final room.
+          </p>
+        </section>
+        <section class="panel">
+          <h2>🖱️ Investigate</h2>
+          <p>
+            Click objects in the room. Some give clues, some open puzzles. Clues
+            you find are stored in your <strong>Inventory</strong> — click an
+            item there to read it again.
+          </p>
+        </section>
+        <!-- 7. Room Unlocking and Hints -->
+        <section class="panel">
+          <h2>🔓 Unlock rooms</h2>
+          <p>
+            Solve all three puzzles of a room, then click the exit door.
+            Completing a room unlocks the next one in Room Selection.
+          </p>
+        </section>
+        <section class="panel">
+          <h2>💡 Hints</h2>
+          <p>
+            Every puzzle has a hint button. A hint costs
+            <strong>50 points</strong> (only the first time you open it for that
+            puzzle).
+          </p>
+        </section>
+        <!-- 8. Auto Save Information -->
+        <section class="panel">
+          <h2>💾 Auto save</h2>
+          <p>
+            Your progress and remaining time are saved in this browser.
+            Refreshing the page will not reset the clock.
+          </p>
+        </section>
+        <!-- 9. Scoring System -->
+        <section class="panel">
+          <h2>⭐ Scoring</h2>
+          <table class="score-table">
+            <tr>
+              <td>Start of game</td>
+              <td>1000</td>
+            </tr>
+            <tr>
+              <td>Solve a puzzle</td>
+              <td class="plus">+100</td>
+            </tr>
+            <tr>
+              <td>Complete a room</td>
+              <td class="plus">+150</td>
+            </tr>
+            <tr>
+              <td>Escape (finish game)</td>
+              <td class="plus">+300</td>
+            </tr>
+            <tr>
+              <td>Wrong answer</td>
+              <td class="minus">−25</td>
+            </tr>
+            <tr>
+              <td>Use a hint</td>
+              <td class="minus">−50</td>
+            </tr>
+          </table>
+          <p class="muted small">The score never goes below 0.</p>
+        </section>
+      </div>
+
+      <!-- Home Navigation -->
+      <div class="center">
+        <a id="go-btn" class="btn btn-primary btn-big" href="index.html"
+          >Back to Home</a
+        >
+      </div>
+    </main>
+    <!-- 10. JavaScript Files and Game Functionality -->
+    <script src="js/storage.js"></script>
+    <script src="js/score.js"></script>
+    <script src="js/timer.js"></script>
+    <script src="js/inventory.js"></script>
+    <script src="js/puzzles.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
